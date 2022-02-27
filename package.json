@@ -6,9 +6,11 @@
   "engines": {
     "node": ">=12"
   },
+  "main": "dist/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "build:release": "tsc --project tsconfig.build.json",
+    "build:release": "rm -rf dist && tsc --project tsconfig.build.json",
     "pretest": "yarn build",
     "release": "yarn build:release && yarn publish",
     "test": "jest"
