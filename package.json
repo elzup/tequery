@@ -1,16 +1,16 @@
 {
   "name": "tequery",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "bin": "dist/index.js",
   "engines": {
     "node": ">=12"
   },
   "scripts": {
-    "build": "tsc && chmod +x dist/cli.js",
-    "start": "npm run build && dist/cli.js",
-    "pretest": "npm run build",
-    "release": "yarn build && yarn publish",
+    "build": "tsc",
+    "build:release": "tsc --project tsconfig.build.json",
+    "pretest": "yarn build",
+    "release": "yarn build:release && yarn publish",
     "test": "jest"
   },
   "files": [
