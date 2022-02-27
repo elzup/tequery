@@ -5,6 +5,7 @@ line2
 line3`
 
 test('text query', () => {
+  expect(tq('base text', `@.split(" ").join(",")`).status).toBe('ok')
   expect(tq('base text', `@.split(" ").join(",")`).result).toBe('base,text')
   expect(tq('base text', `@.replace("base", "changed")`).result).toBe(
     'changed text'
@@ -57,5 +58,41 @@ test('optional comp', () => {
       "call@": false,
       "head@": true,
     }
+  `)
+})
+
+test('errors invalid syntax', () => {
+  const res = tq('base text', `@.split(`)
+
+  expect(res.status).toBe('ng')
+  expect(res.result).toMatchInlineSnapshot(`"base text"`)
+  expect(res.errorText).toMatchInlineSnapshot(`"eval error"`)
+})
+
+test('errors return type', () => {
+  const res = tq('base text', `@ && undefined`)
+
+  expect(res.status).toBe('ng')
+  expect(res.result).toMatchInlineSnapshot(`"base text"`)
+  expect(res.errorText).toMatchInlineSnapshot(`"result type error"`)
+})
+
+test('lines some ok some erorr', () => {
+  const res = tq(
+    `
+_o
+_
+_k
+_
+`.trim(),
+    `$[1]`
+  )
+
+  expect(res.status).toMatchInlineSnapshot(`"ok"`)
+  expect(res.result).toMatchInlineSnapshot(`
+    "o
+    _
+    k
+    _"
   `)
 })

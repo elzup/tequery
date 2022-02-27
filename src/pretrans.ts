@@ -1,5 +1,5 @@
 const isSingleFuncQuery = (query: string) =>
-  !query.includes('@') && !query.includes('.') && !query.includes('.')
+  !query.includes('@') && !query.includes('.') && !query.includes('$')
 const isStartOptional = (query: string) => query.startsWith('.')
 
 export type Complement = 'head@' | 'call@'
