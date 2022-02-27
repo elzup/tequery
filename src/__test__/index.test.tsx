@@ -14,6 +14,11 @@ test('text query', () => {
     tq('https://example.com', `.replace('https://', '')`).result
   ).toMatchInlineSnapshot(`"example.com"`)
 })
+test('empty', () => {
+  expect(tq('', ``).result).toMatchInlineSnapshot(`""`)
+  expect(tq('a', ``).result).toMatchInlineSnapshot(`"a"`)
+  expect(tq('', `a`).result).toMatchInlineSnapshot(`""`)
+})
 
 test('array end glue', () => {
   expect(tq('base text', '@.split(" ")').result).toBe('base\ntext')

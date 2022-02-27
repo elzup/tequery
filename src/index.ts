@@ -23,8 +23,6 @@ export const isAllowType = (result: unknown): result is ResultTypes =>
   allowTypes.includes(typeof (Array.isArray(result) ? result[0] : result))
 
 const runEval = (embed: string, query: string): RunInfo => {
-  if (!query.includes('@')) throw Error('Invalid query: @ sign not find')
-
   const _$text = embed
   const evalQuery = query.replace('@', '_$text')
 
