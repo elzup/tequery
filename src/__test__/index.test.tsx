@@ -10,6 +10,9 @@ test('text query', () => {
   expect(tq('base text', `@.replace("base", "changed")`).result).toBe(
     'changed text'
   )
+  expect(
+    tq('https://example.com', `.replace('https://', '')`).result
+  ).toMatchInlineSnapshot(`"example.com"`)
 })
 
 test('array end glue', () => {
