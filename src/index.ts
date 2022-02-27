@@ -1,37 +1,81 @@
 import * as funcs from './funcs'
+import { Complements, preTrans } from './pretrans'
 
-const { _count, _lcount } = funcs
+type ResultTypes = string | number | (string | number)[]
+type RunInfo = {
+  status: 'ok' | 'ng'
+  result: ResultTypes
+  evalQuery: string
+  errorText: string
+}
 
-const runEval = (embed: string, query: string) => {
+type Result = {
+  status: 'ok' | 'ng'
+  result: string
+  evalQuery: string
+  errorText: string
+  comps: Complements
+}
+
+const allowTypes = ['string', 'number']
+
+export const isAllowType = (result: unknown): result is ResultTypes =>
+  allowTypes.includes(typeof (Array.isArray(result) ? result[0] : result))
+
+const runEval = (embed: string, query: string): RunInfo => {
   if (!query.includes('@')) throw Error('Invalid query: @ sign not find')
 
   const _$text = embed
-  const x = query.replace('@', '_$text')
+  const evalQuery = query.replace('@', '_$text')
+
+  const { _count, _lcount } = funcs // for eval
+  const resBase = { status: 'ok', result: embed, evalQuery, errorText: '' }
 
   try {
-    return eval(x)
+    const result = eval(evalQuery) as unknown
+
+    if (!isAllowType(result))
+      return { ...resBase, status: 'ng', errorText: 'result type error' }
+
+    return { ...resBase, status: 'ok', result }
   } catch (_e) {
-    return `error ${x}`
+    return {
+      ...resBase,
+      status: 'ng',
+      errorText: 'eval error',
+    }
   }
 }
 
-const isSingleFuncQuery = (query: string) =>
-  !query.includes('@') && !query.includes('.') && !query.includes('.')
-const isStartOptional = (query: string) => query.startsWith('.')
+export function tequeryLines(
+  text: string,
+  query: string,
+  comps: Complements,
+  glue = '\n'
+): Result {
+  const results = text
+    .split('\n')
+    .map((line) => runEval(line, query.replace('$', '@')))
 
-export function tequery(text: string, query: string, glue = '\n'): string {
-  if (query.includes('$')) {
-    return text
-      .split('\n')
-      .map((line) => tequery(line, query.replace('$', '@')))
-      .join(glue)
+  return {
+    result: results.map((r) => r.result).join(glue),
+    status: results.some((r) => r.status === 'ok') ? 'ok' : 'ng',
+    evalQuery: results[0]?.evalQuery || '',
+    errorText: results.find((r) => r.status === 'ng')?.errorText ?? '',
+    comps,
   }
-  if (isSingleFuncQuery(query)) return tequery(text, query + '(@)')
-  if (isStartOptional(query)) return tequery(text, `@` + query)
+}
 
-  const result = runEval(text, query)
+export function tequery(text: string, query: string, glue = '\n'): Result {
+  const { query: compedQuery, comps } = preTrans(query)
 
-  if (Array.isArray(result)) return result.join(glue)
+  if (query.includes('$')) return tequeryLines(text, compedQuery, comps, glue)
 
-  return String(result)
+  const res = runEval(text, compedQuery)
+
+  const result = Array.isArray(res.result)
+    ? res.result.join(glue)
+    : String(res.result)
+
+  return { ...res, result, comps }
 }

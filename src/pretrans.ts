@@ -2,9 +2,10 @@ const isSingleFuncQuery = (query: string) =>
   !query.includes('@') && !query.includes('.') && !query.includes('.')
 const isStartOptional = (query: string) => query.startsWith('.')
 
-type Complement = 'head@' | 'call@'
+export type Complement = 'head@' | 'call@'
+export type Complements = Record<Complement, boolean>
 
-const complementsDefault = (): Record<Complement, boolean> => ({
+const complementsDefault = (): Complements => ({
   'head@': false,
   'call@': false,
 })
