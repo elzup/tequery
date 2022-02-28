@@ -25,16 +25,26 @@ const allowTypes = ['string', 'number']
 export const isAllowType = (result: unknown): result is ResultTypes =>
   allowTypes.includes(typeof (Array.isArray(result) ? result[0] : result))
 
+const _$text = '_$text'
+
+export const toReturnCode = (code: string) => {
+  if (code.includes(';')) return code.replace(/.*;/, '$&return ')
+  return `return ${code}`
+}
+
 const runEval = (embed: string, query: string): RunInfo => {
-  const _$text = embed
-  const evalQuery = query.replace('@', '_$text')
+  const evalQuery = query.replace('@', _$text)
 
   // NOTE: any ideas smartly send context to eval
   const { _count, _lineCount, _packLine } = funcs // for eval
   const resBase = { status: 'ok', result: embed, evalQuery, errorText: '' }
 
   try {
-    const result = eval(evalQuery) as unknown
+    const result = Function(
+      '_$text',
+      ...builtInFuncs,
+      toReturnCode(evalQuery)
+    )(embed, ...Object.values(funcs)) as unknown
 
     if (!isAllowType(result))
       return { ...resBase, status: 'ng', errorText: 'result type error' }

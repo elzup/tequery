@@ -1,12 +1,14 @@
-import { builtInFuncs, tequery as tq } from '..'
+import { builtInFuncs, tequery as tq, toReturnCode } from '..'
 
 const multilineText = `line1
 line2
 line3`
 
 test('text query', () => {
-  expect(tq('base text', `@.split(" ").join(",")`).status).toBe('ok')
-  expect(tq('base text', `@.split(" ").join(",")`).result).toBe('base,text')
+  const res = tq('base text', `@.split(" ").join(",")`)
+
+  expect(res.status).toBe('ok')
+  expect(res.result).toBe('base,text')
   expect(tq('base text', `@.replace("base", "changed")`).result).toBe(
     'changed text'
   )
@@ -110,4 +112,14 @@ test('build in funcs', () => {
   `)
 
   expect(tq('hello', builtInFuncs.join(';')).status).toBe('ok')
+})
+
+test('toReturnCode', () => {
+  expect(toReturnCode('0 + 1')).toMatchInlineSnapshot(`"return 0 + 1"`)
+  expect(toReturnCode('a = 1;b = 2; a + b')).toMatchInlineSnapshot(
+    `"a = 1;b = 2;return  a + b"`
+  )
+  expect(
+    toReturnCode('_count;_lineCount;_packLine;_$text')
+  ).toMatchInlineSnapshot(`"_count;_lineCount;_packLine;return _$text"`)
 })
