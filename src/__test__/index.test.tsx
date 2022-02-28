@@ -1,4 +1,4 @@
-import { tequery as tq } from '..'
+import { builtInFuncs, tequery as tq } from '..'
 
 const multilineText = `line1
 line2
@@ -98,4 +98,16 @@ _
     k
     _"
   `)
+})
+
+test('build in funcs', () => {
+  expect(builtInFuncs).toMatchInlineSnapshot(`
+    Array [
+      "_count",
+      "_lineCount",
+      "_packLine",
+    ]
+  `)
+
+  expect(tq('hello', builtInFuncs.join(';')).status).toBe('ok')
 })

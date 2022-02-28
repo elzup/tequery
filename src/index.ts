@@ -1,5 +1,8 @@
 import * as funcs from './funcs'
+// import { _count } from './funcs'
 import { Complements, preTrans } from './pretrans'
+
+export const builtInFuncs = Object.keys(funcs)
 
 type ResultTypes = string | number | (string | number)[]
 type RunInfo = {
@@ -26,7 +29,8 @@ const runEval = (embed: string, query: string): RunInfo => {
   const _$text = embed
   const evalQuery = query.replace('@', '_$text')
 
-  const { _count, _lineCount } = funcs // for eval
+  // NOTE: any ideas smartly send context to eval
+  const { _count, _lineCount, _packLine } = funcs // for eval
   const resBase = { status: 'ok', result: embed, evalQuery, errorText: '' }
 
   try {
