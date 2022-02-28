@@ -26,7 +26,7 @@ const runEval = (embed: string, query: string): RunInfo => {
   const _$text = embed
   const evalQuery = query.replace('@', '_$text')
 
-  const { _count, _lcount } = funcs // for eval
+  const { _count, _lineCount } = funcs // for eval
   const resBase = { status: 'ok', result: embed, evalQuery, errorText: '' }
 
   try {

@@ -1,2 +1,3 @@
-export const _count = (text: string) => text.length
-export const _lcount = (text: string) => text.split('\n').length
+export const _count = (text: string | unknown[]) => text.length
+export const _lineCount = (text: string) => text.split('\n').length
+

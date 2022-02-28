@@ -52,10 +52,10 @@ tq('abcde', '_count(@)').result
 tq('abcde', '_count').result
 ```
 
-**\_lcount**
+**\_lineCount**
 
 ```js
-tq('__\n__\n__', `_lcount(@)`).result
+tq('__\n__\n__', `_lineCount(@)`).result
 // => '3'
 ```
 
