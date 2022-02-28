@@ -35,8 +35,6 @@ export const toReturnCode = (code: string) => {
 const runEval = (embed: string, query: string): RunInfo => {
   const evalQuery = query.replace('@', _$text)
 
-  // NOTE: any ideas smartly send context to eval
-  const { _count, _lineCount, _packLine } = funcs // for eval
   const resBase = { status: 'ok', result: embed, evalQuery, errorText: '' }
 
   try {
