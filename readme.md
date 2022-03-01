@@ -1,4 +1,4 @@
-# tequery
+#  <img src="logo.png" width="45" align="left">tequery
 
 > text transform query
 
