@@ -1,8 +1,13 @@
 import * as funcs from './funcs'
 // import { _count } from './funcs'
 import { Complements, preTrans } from './pretrans'
+import { transpose } from './utils'
 
 export const builtInFuncs = Object.keys(funcs)
+const [builtInFuncNames, buitlIntFuncs] = transpose(Object.entries(funcs)) as [
+  string[],
+  unknown[]
+]
 
 type ResultTypes = string | number | (string | number)[]
 type RunInfo = {
@@ -40,9 +45,9 @@ const runEval = (embed: string, query: string): RunInfo => {
   try {
     const result = Function(
       '_$text',
-      ...builtInFuncs,
+      ...builtInFuncNames,
       toReturnCode(evalQuery)
-    )(embed, ...Object.values(funcs)) as unknown
+    )(embed, ...buitlIntFuncs)
 
     if (!isAllowType(result))
       return { ...resBase, status: 'ng', errorText: 'result type error' }
