@@ -15,6 +15,7 @@ type RunInfo = {
   result: ResultTypes
   evalQuery: string
   errorText: string
+  isResultFunc: boolean
 }
 
 type Result = {
@@ -40,19 +41,33 @@ export const toReturnCode = (code: string) => {
 const runEval = (embed: string, query: string): RunInfo => {
   const evalQuery = query.replace('@', _$text)
 
-  const resBase = { status: 'ok', result: embed, evalQuery, errorText: '' }
+  const resBase = {
+    status: 'ok',
+    result: embed,
+    evalQuery,
+    errorText: '',
+    isResultFunc: false,
+  }
 
   try {
-    const result = Function(
+    const result0 = Function(
       '_$text',
       ...builtInFuncNames,
       toReturnCode(evalQuery)
     )(embed, ...buitlIntFuncs)
 
-    if (!isAllowType(result))
-      return { ...resBase, status: 'ng', errorText: 'result type error' }
+    const isResultFunc = typeof result0 === 'function'
+    const result = isResultFunc ? result0(embed) : result0
 
-    return { ...resBase, status: 'ok', result }
+    if (!isAllowType(result))
+      return {
+        ...resBase,
+        status: 'ng',
+        errorText: 'result type error',
+        isResultFunc,
+      }
+
+    return { ...resBase, status: 'ok', result, isResultFunc }
   } catch (_e) {
     return {
       ...resBase,
@@ -72,12 +87,14 @@ export function tequeryLines(
     .split('\n')
     .map((line) => runEval(line, query.replace('$', '@')))
 
+  const isResultFunc = results[0]?.isResultFunc || false
+
   return {
     result: results.map((r) => r.result).join(glue),
     status: results.some((r) => r.status === 'ok') ? 'ok' : 'ng',
     evalQuery: results[0]?.evalQuery || '',
     errorText: results.find((r) => r.status === 'ng')?.errorText ?? '',
-    comps,
+    comps: { ...comps, 'call@': isResultFunc },
   }
 }
 
@@ -92,5 +109,5 @@ export function tequery(text: string, query: string, glue = '\n'): Result {
     ? res.result.join(glue)
     : String(res.result)
 
-  return { ...res, result, comps }
+  return { ...res, result, comps: { ...comps, 'call@': res.isResultFunc } }
 }

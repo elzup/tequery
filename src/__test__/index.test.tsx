@@ -44,7 +44,7 @@ test('line sign query', () => {
 test('optional comp', () => {
   const res1 = tq('abcde', `_count`)
 
-  expect(res1.evalQuery).toMatchInlineSnapshot(`"_count(_$text)"`)
+  expect(res1.evalQuery).toMatchInlineSnapshot(`"_count"`)
   expect(res1.comps).toMatchInlineSnapshot(`
     Object {
       "call@": true,
@@ -123,3 +123,20 @@ test('toReturnCode', () => {
     toReturnCode('_count;_lineCount;_packLine;_$text')
   ).toMatchInlineSnapshot(`"_count;_lineCount;_packLine;return _$text"`)
 })
+
+// test('strict query parse', () => {
+//   const res = tq('hoge@example.com', '"hoge@$".replace(/[@$]/g, "_")')
+
+//   expect(res).toMatchInlineSnapshot(`
+//     Object {
+//       "comps": Object {
+//         "call@": false,
+//         "head@": false,
+//       },
+//       "errorText": "",
+//       "evalQuery": "\\"hoge_$text@\\".replace(/[@$]/g, \\"_\\")",
+//       "result": "hoge__text_",
+//       "status": "ok",
+//     }
+//   `)
+// })

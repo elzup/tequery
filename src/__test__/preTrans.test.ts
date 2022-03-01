@@ -17,14 +17,3 @@ test('head @', () => {
     }
   `)
 })
-test('call @', () => {
-  expect(preTrans('_trim')).toMatchInlineSnapshot(`
-    Object {
-      "comps": Object {
-        "call@": true,
-        "head@": false,
-      },
-      "query": "_trim(@)",
-    }
-  `)
-})

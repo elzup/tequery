@@ -1,5 +1,3 @@
-const isSingleFuncQuery = (query: string) =>
-  !query.includes('@') && !query.includes('.') && !query.includes('$')
 const isStartOptional = (query: string) => query.startsWith('.')
 
 export type Complement = 'head@' | 'call@'
@@ -19,10 +17,6 @@ export const preTrans = (query: string) => {
   if (isStartOptional(query)) {
     comps['head@'] = true
     transes.push((q) => `@` + q)
-  }
-  if (isSingleFuncQuery(query)) {
-    comps['call@'] = true
-    transes.push((q) => q + '(@)')
   }
   return { query: transes.reduce((p, f) => f(p), query), comps }
 }
