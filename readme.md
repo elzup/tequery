@@ -42,21 +42,45 @@ tq(text, '$$.trim()').result
 
 ### built-in funcs
 
-**\_count**
+**len**
 
 ```js
-tq('abcde', '_count($)').result
+tq('abcde', 'len($)').result
 // => '5'
 
 // equaliy shorthand
-tq('abcde', '_count').result
+tq('abcde', 'len').result
 ```
 
-**\_lineCount**
+**lineCount**
 
 ```js
-tq('__\n__\n__', `_lineCount($)`).result
+tq('__\n__\n__', `lineCount($)`).result
 // => '3'
+```
+
+**count**
+
+```js
+tq('aaa-a-', `a`).result
+// => '4'
+```
+
+alias `lineNum`, `nol`
+
+**pack**
+
+```js
+tq(
+  `a
+b
+
+c
+
+`,
+  `pack($)`
+).result
+// => 'a\nb\nc\n'
 ```
 
 ## other return
@@ -70,3 +94,15 @@ type Result = {
   comps: Complements // is shorthund enabled
 }
 ```
+
+## finalize
+
+final process by return value type.
+
+| type                     | process        |
+| ------------------------ | -------------- |
+| typeof v === 'string'    | `v`            |
+| typeof v === 'number'    | `String(v)`    |
+| typeof v === 'function'  | `v($)`         |
+| typeof v === 'undefined' | `""`           |
+| Array.isArray(v)         | `v.join("\n")` |
