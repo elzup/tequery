@@ -9,7 +9,7 @@ test('text query', () => {
 
   expect(res.status).toBe('ok')
   expect(res.result).toBe('base,text')
-  expect(tq('base text', `@.replace("base", "changed")`).result).toBe(
+  expect(tq('base text', `$.replace("base", "changed")`).result).toBe(
     'changed text'
   )
   expect(
@@ -23,20 +23,20 @@ test('empty', () => {
 })
 
 test('array end glue', () => {
-  expect(tq('base text', '@.split(" ")').result).toBe('base\ntext')
+  expect(tq('base text', '$.split(" ")').result).toBe('base\ntext')
 })
 
 test('multiline eval', () => {
-  expect(tq(multilineText, '@').result).toBe(multilineText)
+  expect(tq(multilineText, '$').result).toBe(multilineText)
 })
 
 test('line sign query', () => {
-  expect(tq(multilineText, '$.substring(4, 5)').result).toBe('1\n2\n3')
+  expect(tq(multilineText, '$$.substring(4, 5)').result).toBe('1\n2\n3')
   expect(
     tq(
       ` hoge
     fuga`,
-      '$.trim()'
+      '$$.trim()'
     ).result
   ).toBe('hoge\nfuga')
 })
@@ -56,7 +56,7 @@ test('optional comp', () => {
   const res2 = tq('base text', `.split(" ").join(",")`)
 
   expect(res2.evalQuery).toMatchInlineSnapshot(
-    `"_$text.split(\\" \\").join(\\",\\")"`
+    `"$.split(\\" \\").join(\\",\\")"`
   )
   expect(res2.comps).toMatchInlineSnapshot(`
     Object {
@@ -67,7 +67,7 @@ test('optional comp', () => {
 })
 
 test('errors invalid syntax', () => {
-  const res = tq('base text', `@.split(`)
+  const res = tq('base text', `$.split(`)
 
   expect(res.status).toBe('ng')
   expect(res.result).toMatchInlineSnapshot(`"base text"`)
@@ -75,7 +75,7 @@ test('errors invalid syntax', () => {
 })
 
 test('errors return type', () => {
-  const res = tq('base text', `@ && undefined`)
+  const res = tq('base text', `$ && undefined`)
 
   expect(res.status).toBe('ng')
   expect(res.result).toMatchInlineSnapshot(`"base text"`)
@@ -85,20 +85,20 @@ test('errors return type', () => {
 test('lines some ok some erorr', () => {
   const res = tq(
     `
-_o
-_
-_k
-_
+xo
+x
+xo
+x
 `.trim(),
-    `$[1]`
+    `$$[1]`
   )
 
   expect(res.status).toMatchInlineSnapshot(`"ok"`)
   expect(res.result).toMatchInlineSnapshot(`
     "o
-    _
-    k
-    _"
+    x
+    o
+    x"
   `)
 })
 

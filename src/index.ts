@@ -26,19 +26,15 @@ const allowTypes = ['string', 'number']
 export const isAllowType = (result: unknown): result is ResultTypes =>
   allowTypes.includes(typeof (Array.isArray(result) ? result[0] : result))
 
-const _$text = '_$text'
-
 export const toReturnCode = (code: string) => {
   return `return ${code}`
 }
 
 const runEval = (embed: string, query: string): RunInfo => {
-  const evalQuery = query.replace('@', _$text)
-
   const resBase = {
     status: 'ok',
     result: embed,
-    evalQuery,
+    evalQuery: query,
     errorText: '',
     isResultFunc: false,
   }
@@ -46,10 +42,10 @@ const runEval = (embed: string, query: string): RunInfo => {
   try {
     const result0 = funcEval(
       {
-        _$text: embed,
+        $: embed,
         ...funcs,
       },
-      toReturnCode(evalQuery)
+      toReturnCode(query)
     )
 
     const isResultFunc = typeof result0 === 'function'
@@ -81,7 +77,7 @@ export function tequeryLines(
 ): Result {
   const results = text
     .split('\n')
-    .map((line) => runEval(line, query.replace('$', '@')))
+    .map((line) => runEval(line, query.replace('$$', '$')))
 
   const isResultFunc = results[0]?.isResultFunc || false
 
@@ -97,7 +93,7 @@ export function tequeryLines(
 export function tequery(text: string, query: string, glue = '\n'): Result {
   const { query: compedQuery, comps } = preTrans(query)
 
-  if (query.includes('$')) return tequeryLines(text, compedQuery, comps, glue)
+  if (query.includes('$$')) return tequeryLines(text, compedQuery, comps, glue)
 
   const res = runEval(text, compedQuery)
 

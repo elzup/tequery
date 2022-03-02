@@ -16,7 +16,7 @@ export const preTrans = (query: string) => {
 
   if (isStartOptional(query)) {
     comps['head@'] = true
-    transes.push((q) => `@` + q)
+    transes.push((q) => `$` + q)
   }
   return { query: transes.reduce((p, f) => f(p), query), comps }
 }
