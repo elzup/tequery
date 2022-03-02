@@ -1,11 +1,10 @@
 const isStartOptional = (query: string) => query.startsWith('.')
 
-export type Complement = 'head@' | 'call@'
+export type Complement = 'nonHead'
 export type Complements = Record<Complement, boolean>
 
 const complementsDefault = (): Complements => ({
-  'head@': false,
-  'call@': false,
+  nonHead: false,
 })
 
 type TrasFunc = (s: string) => string
@@ -15,7 +14,7 @@ export const preTrans = (query: string) => {
   const transes: TrasFunc[] = []
 
   if (isStartOptional(query)) {
-    comps['head@'] = true
+    comps.nonHead = true
     transes.push((q) => `$` + q)
   }
   return { query: transes.reduce((p, f) => f(p), query), comps }

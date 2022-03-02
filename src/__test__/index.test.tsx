@@ -47,8 +47,7 @@ test('optional comp', () => {
   expect(res1.evalQuery).toMatchInlineSnapshot(`"count"`)
   expect(res1.comps).toMatchInlineSnapshot(`
     Object {
-      "call@": true,
-      "head@": false,
+      "nonHead": false,
     }
   `)
   expect(tq('abcde', `len`).result).toBe('5')
@@ -60,8 +59,7 @@ test('optional comp', () => {
   )
   expect(res2.comps).toMatchInlineSnapshot(`
     Object {
-      "call@": false,
-      "head@": true,
+      "nonHead": true,
     }
   `)
 })

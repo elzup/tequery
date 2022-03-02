@@ -10,8 +10,7 @@ test('head @', () => {
   expect(preTrans('.hello')).toMatchInlineSnapshot(`
     Object {
       "comps": Object {
-        "call@": false,
-        "head@": true,
+        "nonHead": true,
       },
       "query": "$.hello",
     }
