@@ -11,7 +11,8 @@ type RunInfo = {
   result: ResultTypes
   evalQuery: string
   errorText: string
-  isResultFunc: boolean
+  returnType: string
+  endReturnType: string
 }
 
 type Result = {
@@ -20,6 +21,8 @@ type Result = {
   evalQuery: string
   errorText: string
   comps: Complements
+  returnType: string
+  endReturnType: string
 }
 
 const allowTypes = ['string', 'number']
@@ -31,13 +34,35 @@ export const toReturnCode = (code: string) => {
   return `return ${code}`
 }
 
+const finalize = (
+  result: unknown,
+  text: string
+): {
+  result: ResultTypes
+  ok: boolean
+} => {
+  if (typeof result === 'function') {
+    const endResult = result(text)
+
+    return { ok: true, result: endResult }
+  }
+  if (typeof result === 'undefined') {
+    return { ok: true, result: '' }
+  }
+  if (isAllowType(result)) {
+    return { ok: true, result }
+  }
+  return { ok: false, result: '' }
+}
+
 const runEval = (embed: string, query: string): RunInfo => {
   const resBase = {
     status: 'ok',
     result: embed,
     evalQuery: query,
     errorText: '',
-    isResultFunc: false,
+    returnType: 'string',
+    endReturnType: 'string',
   }
 
   try {
@@ -49,22 +74,18 @@ const runEval = (embed: string, query: string): RunInfo => {
       toReturnCode(query)
     )
 
-    const isResultFunc = typeof result0 === 'function'
-    const result = isResultFunc
-      ? result0(embed)
-      : typeof result0 === 'undefined'
-      ? ''
-      : result0
+    const returnType = typeof result0
+    const { result, ok } = finalize(result0, embed)
+    const endReturnType = typeof result
 
-    if (!isAllowType(result))
-      return {
-        ...resBase,
-        status: 'ng',
-        errorText: 'result type error',
-        isResultFunc,
-      }
-
-    return { ...resBase, status: 'ok', result, isResultFunc }
+    if (ok) {
+      return { ...resBase, status: 'ok', result, returnType, endReturnType }
+    }
+    return {
+      ...resBase,
+      status: 'ng',
+      errorText: 'result type error',
+    }
   } catch (_e) {
     return {
       ...resBase,
@@ -84,19 +105,15 @@ export function tequeryLines(
     .split('\n')
     .map((line) => runEval(line, query.replace('$$', '$')))
 
-  const isResultFunc = results[0]?.isResultFunc || false
-
   return {
     result: results.map((r) => r.result).join(glue),
     status: results.some((r) => r.status === 'ok') ? 'ok' : 'ng',
     evalQuery: results[0]?.evalQuery || '',
+    returnType: results[0]?.returnType || 'string',
+    endReturnType: results[0]?.endReturnType || 'string',
     errorText: results.find((r) => r.status === 'ng')?.errorText ?? '',
-    comps: { ...comps, 'call@': isResultFunc },
+    comps: { ...comps },
   }
-}
-
-const finalize = (res: AllowType): string => {
-  return String(res)
 }
 
 export function tequery(text: string, query: string, glue = '\n'): Result {
@@ -107,8 +124,8 @@ export function tequery(text: string, query: string, glue = '\n'): Result {
   const res = runEval(text, compedQuery)
 
   const result = Array.isArray(res.result)
-    ? res.result.map(finalize).join(glue)
-    : finalize(res.result)
+    ? res.result.map(String).join(glue)
+    : String(res.result)
 
-  return { ...res, result, comps: { ...comps, 'call@': res.isResultFunc } }
+  return { ...res, result, comps: { ...comps } }
 }
