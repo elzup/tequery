@@ -5,7 +5,7 @@ line2
 line3`
 
 test('text query', () => {
-  const res = tq('base text', `@.split(" ").join(",")`)
+  const res = tq('base text', `$.split(" ").join(",")`)
 
   expect(res.status).toBe('ok')
   expect(res.result).toBe('base,text')
