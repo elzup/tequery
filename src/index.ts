@@ -4,7 +4,8 @@ import { Complements, preTrans } from './pretrans'
 import { funcEval } from './utils'
 
 export const builtInFuncs = Object.keys(funcs)
-type ResultTypes = string | number | (string | number)[]
+type AllowType = string | number
+type ResultTypes = AllowType | AllowType[]
 type RunInfo = {
   status: 'ok' | 'ng'
   result: ResultTypes
@@ -49,7 +50,11 @@ const runEval = (embed: string, query: string): RunInfo => {
     )
 
     const isResultFunc = typeof result0 === 'function'
-    const result = isResultFunc ? result0(embed) : result0
+    const result = isResultFunc
+      ? result0(embed)
+      : typeof result0 === 'undefined'
+      ? ''
+      : result0
 
     if (!isAllowType(result))
       return {
@@ -90,6 +95,10 @@ export function tequeryLines(
   }
 }
 
+const finalize = (res: AllowType): string => {
+  return String(res)
+}
+
 export function tequery(text: string, query: string, glue = '\n'): Result {
   const { query: compedQuery, comps } = preTrans(query)
 
@@ -98,8 +107,8 @@ export function tequery(text: string, query: string, glue = '\n'): Result {
   const res = runEval(text, compedQuery)
 
   const result = Array.isArray(res.result)
-    ? res.result.join(glue)
-    : String(res.result)
+    ? res.result.map(finalize).join(glue)
+    : finalize(res.result)
 
   return { ...res, result, comps: { ...comps, 'call@': res.isResultFunc } }
 }

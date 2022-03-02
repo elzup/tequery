@@ -17,9 +17,9 @@ test('text query', () => {
   ).toMatchInlineSnapshot(`"example.com"`)
 })
 test('empty', () => {
-  expect(tq('', ``).result).toMatchInlineSnapshot(`""`)
-  expect(tq('a', ``).result).toMatchInlineSnapshot(`"a"`)
-  expect(tq('', `a`).result).toMatchInlineSnapshot(`""`)
+  expect(tq('', ``).result).toBe('')
+  expect(tq('a', ``).result).toBe('')
+  expect(tq('', `a`).result).toBe('')
 })
 
 test('array end glue', () => {
@@ -75,7 +75,7 @@ test('errors invalid syntax', () => {
 })
 
 test('errors return type', () => {
-  const res = tq('base text', `$ && undefined`)
+  const res = tq('base text', `$ && null`)
 
   expect(res.status).toBe('ng')
   expect(res.result).toMatchInlineSnapshot(`"base text"`)
@@ -96,9 +96,9 @@ x
   expect(res.status).toMatchInlineSnapshot(`"ok"`)
   expect(res.result).toMatchInlineSnapshot(`
     "o
-    x
+    
     o
-    x"
+    "
   `)
 })
 
