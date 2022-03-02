@@ -42,16 +42,16 @@ test('line sign query', () => {
 })
 
 test('optional comp', () => {
-  const res1 = tq('abcde', `_count`)
+  const res1 = tq('abcde', `count`)
 
-  expect(res1.evalQuery).toMatchInlineSnapshot(`"_count"`)
+  expect(res1.evalQuery).toMatchInlineSnapshot(`"count"`)
   expect(res1.comps).toMatchInlineSnapshot(`
     Object {
       "call@": true,
       "head@": false,
     }
   `)
-  expect(tq('abcde', `_count`).result).toBe('5')
+  expect(tq('abcde', `len`).result).toBe('5')
 
   const res2 = tq('base text', `.split(" ").join(",")`)
 
@@ -105,9 +105,12 @@ x
 test('build in funcs', () => {
   expect(builtInFuncs).toMatchInlineSnapshot(`
     Array [
-      "_count",
-      "_lineCount",
-      "_packLine",
+      "len",
+      "count",
+      "lineCount",
+      "lineNum",
+      "nol",
+      "pack",
     ]
   `)
 
