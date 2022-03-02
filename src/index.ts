@@ -29,7 +29,6 @@ export const isAllowType = (result: unknown): result is ResultTypes =>
 const _$text = '_$text'
 
 export const toReturnCode = (code: string) => {
-  if (code.includes(';')) return code.replace(/.*;/, '$&return ')
   return `return ${code}`
 }
 

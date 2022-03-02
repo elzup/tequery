@@ -111,17 +111,12 @@ test('build in funcs', () => {
     ]
   `)
 
-  expect(tq('hello', builtInFuncs.join(';')).status).toBe('ok')
+  expect(tq('hello', builtInFuncs.join('&&')).status).toBe('ok')
 })
 
 test('toReturnCode', () => {
   expect(toReturnCode('0 + 1')).toMatchInlineSnapshot(`"return 0 + 1"`)
-  expect(toReturnCode('a = 1;b = 2; a + b')).toMatchInlineSnapshot(
-    `"a = 1;b = 2;return  a + b"`
-  )
-  expect(
-    toReturnCode('_count;_lineCount;_packLine;_$text')
-  ).toMatchInlineSnapshot(`"_count;_lineCount;_packLine;return _$text"`)
+  expect(toReturnCode(`';' + ';'`)).toMatchInlineSnapshot(`"return ';' + ';'"`)
 })
 
 // test('strict query parse', () => {
