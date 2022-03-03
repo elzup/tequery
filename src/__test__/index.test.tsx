@@ -143,6 +143,8 @@ test('build in funcs', () => {
       "lineNum",
       "nol",
       "pack",
+      "shiftl",
+      "shiftr",
     ]
   `)
 

@@ -9,3 +9,9 @@ export const nol = lineNum // number of line
 
 export const pack = (text: string, n = 1) =>
   text.replace(new RegExp(`\n{${n},}`, 'g'), '\n'.repeat(n))
+
+export const shiftl = (text: string, to = '\t', n = 1) =>
+  text.split(to).slice(n).join(to)
+
+export const shiftr = (text: string, to = '\t', n = 1) =>
+  text.split(to).slice(0, -n).join(to)
