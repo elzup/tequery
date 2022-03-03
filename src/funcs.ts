@@ -14,3 +14,6 @@ export const shiftl = (text: string, to = '\t', n = 1) =>
 
 export const shiftr = (text: string, to = '\t', n = 1) =>
   text.split(to).slice(0, -n).join(to)
+
+export const json = JSON.stringify
+export const jsonf = (v: unknown) => JSON.stringify(v, null, '\t')

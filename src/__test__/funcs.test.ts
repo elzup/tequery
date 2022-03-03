@@ -1,4 +1,14 @@
-import { count, len, lineNum, ln, pack, shiftl, shiftr } from '../funcs'
+import {
+  count,
+  json,
+  jsonf,
+  len,
+  lineNum,
+  ln,
+  pack,
+  shiftl,
+  shiftr,
+} from '../funcs'
 
 test('len', () => {
   expect(len([])).toBe(0)
@@ -32,4 +42,16 @@ test('shiftl shiftr', () => {
   expect(shiftr('a\tb\tc')).toBe('a\tb')
   expect(shiftl('a,b,c,d', ',', 2)).toBe('c,d')
   expect(shiftr('a,b,c,d', ',', 2)).toBe('a,b')
+})
+
+test('json jsonf', () => {
+  expect(json({ a: 1, b: 2 })).toBe('{"a":1,"b":2}')
+  expect(jsonf({ a: 1, b: 2 })).toBe(
+    `
+{
+	"a": 1,
+	"b": 2
+}
+`.trim()
+  )
 })

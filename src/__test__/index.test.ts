@@ -150,6 +150,8 @@ test('build in funcs', () => {
       "pack",
       "shiftl",
       "shiftr",
+      "json",
+      "jsonf",
     ]
   `)
 
