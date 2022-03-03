@@ -101,8 +101,10 @@ final process by return value type.
 
 | type                     | process        |
 | ------------------------ | -------------- |
+| typeof v === 'function'  | `v($)`         |
 | typeof v === 'string'    | `v`            |
 | typeof v === 'number'    | `String(v)`    |
-| typeof v === 'function'  | `v($)`         |
 | typeof v === 'undefined' | `""`           |
+| v === null               | `""`           |
 | Array.isArray(v)         | `v.join("\n")` |
+| other                    | `String(v)`    |
