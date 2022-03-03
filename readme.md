@@ -1,4 +1,5 @@
-# <img src="logo.png" width="45" align="left">tequery
+# <img src="logo.png" width="45" align="left">tequery 
+[![](https://badgen.net/bundlephobia/minzip/tequery)](https://bundlephobia.com/result?p=tequery)
 
 > text transform query
 
