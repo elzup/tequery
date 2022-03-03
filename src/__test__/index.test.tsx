@@ -49,6 +49,7 @@ test('array end glue', () => {
   expect(tq('base text', '$.split(" ")')).toMatchInlineSnapshot(`
     Object {
       "comps": Object {
+        "lineRun": false,
         "nonHead": false,
       },
       "errorText": "",
@@ -86,6 +87,7 @@ test('optional comp', () => {
   expect(res1.evalQuery).toMatchInlineSnapshot(`"count"`)
   expect(res1.comps).toMatchInlineSnapshot(`
     Object {
+      "lineRun": false,
       "nonHead": false,
     }
   `)
@@ -98,6 +100,7 @@ test('optional comp', () => {
   )
   expect(res2.comps).toMatchInlineSnapshot(`
     Object {
+      "lineRun": false,
       "nonHead": true,
     }
   `)

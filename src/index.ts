@@ -68,9 +68,7 @@ export function tequeryLines(
   comps: Complements,
   glue = '\n'
 ): Result {
-  const results = text
-    .split('\n')
-    .map((line) => runEval(line, query.replace('$$', '$')))
+  const results = text.split('\n').map((line) => runEval(line, query))
 
   return {
     result: results.map((r) => r.result).join(glue),
@@ -78,21 +76,17 @@ export function tequeryLines(
     status: results.some((r) => r.status === 'ok') ? 'ok' : 'ng',
     evalQuery: results[0]?.evalQuery || '',
     returnType: results[0]?.returnType || 'string',
-    errorText: results.find((r) => r.status === 'ng')?.errorText ?? '',
-    comps: { ...comps },
+    errorText: results.find((r) => r.status === 'ng')?.errorText || '',
+    comps,
   }
 }
 
 export function tequery(text: string, query: string, glue = '\n'): Result {
   const { query: compedQuery, comps } = preTrans(query)
 
-  if (query.includes('$$')) return tequeryLines(text, compedQuery, comps, glue)
+  if (comps.lineRun) return tequeryLines(text, compedQuery, comps, glue)
 
   const res = runEval(text, compedQuery)
 
-  const result = Array.isArray(res.result)
-    ? res.result.map(String).join(glue)
-    : String(res.result)
-
-  return { ...res, result, comps: { ...comps } }
+  return { ...res, comps }
 }
