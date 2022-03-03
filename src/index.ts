@@ -1,10 +1,10 @@
 import { finalize } from './finalize'
 import * as funcs from './funcs'
-// import { _count } from './funcs'
 import { Complements, preTrans } from './pretrans'
 import { funcEval } from './utils'
 
 export const builtInFuncs = Object.keys(funcs)
+
 type RunInfo = {
   status: 'ok' | 'ng'
   resultRaw: unknown
