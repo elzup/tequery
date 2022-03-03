@@ -1,72 +1,37 @@
+import { finalize } from './finalize'
 import * as funcs from './funcs'
 // import { _count } from './funcs'
 import { Complements, preTrans } from './pretrans'
 import { funcEval } from './utils'
 
 export const builtInFuncs = Object.keys(funcs)
-type AllowType = string | number
-type ResultTypes = AllowType | AllowType[]
 type RunInfo = {
   status: 'ok' | 'ng'
-  result: ResultTypes
-  evalQuery: string
-  errorText: string
-  returnType: string
-  endReturnType: string
-}
-
-type Result = {
-  status: 'ok' | 'ng'
+  resultRaw: unknown
   result: string
   evalQuery: string
   errorText: string
-  comps: Complements
   returnType: string
-  endReturnType: string
 }
 
-const allowTypes = ['string', 'number']
-
-export const isAllowType = (result: unknown): result is ResultTypes =>
-  allowTypes.includes(typeof (Array.isArray(result) ? result[0] : result))
-
-export const toReturnCode = (code: string) => {
-  return `return ${code}`
+type Result = RunInfo & {
+  comps: Complements
 }
 
-const finalize = (
-  result: unknown,
-  text: string
-): {
-  result: ResultTypes
-  ok: boolean
-} => {
-  if (typeof result === 'function') {
-    const endResult = result(text)
-
-    return { ok: true, result: endResult }
-  }
-  if (typeof result === 'undefined') {
-    return { ok: true, result: '' }
-  }
-  if (isAllowType(result)) {
-    return { ok: true, result }
-  }
-  return { ok: false, result: '' }
-}
+export const toReturnCode = (code: string) => `return ${code}`
 
 const runEval = (embed: string, query: string): RunInfo => {
   const resBase = {
     status: 'ok',
     result: embed,
+    resultRaw: embed,
     evalQuery: query,
     errorText: '',
     returnType: 'string',
-    endReturnType: 'string',
   }
 
   try {
-    const result0 = funcEval(
+    const resultRaw = funcEval(
       {
         $: embed,
         ...funcs,
@@ -74,18 +39,20 @@ const runEval = (embed: string, query: string): RunInfo => {
       toReturnCode(query)
     )
 
-    const returnType = typeof result0
-    const { result, ok } = finalize(result0, embed)
-    const endReturnType = typeof result
+    const returnType = typeof resultRaw
+    const result = finalize(resultRaw, embed)
 
-    if (ok) {
-      return { ...resBase, status: 'ok', result, returnType, endReturnType }
+    if (typeof result === 'string') {
+      return { ...resBase, status: 'ok', result, returnType, resultRaw }
     }
-    return {
+
+    const r: RunInfo = {
       ...resBase,
       status: 'ng',
       errorText: 'result type error',
     }
+
+    return r
   } catch (_e) {
     return {
       ...resBase,
@@ -107,10 +74,10 @@ export function tequeryLines(
 
   return {
     result: results.map((r) => r.result).join(glue),
+    resultRaw: results.map((r) => r.resultRaw),
     status: results.some((r) => r.status === 'ok') ? 'ok' : 'ng',
     evalQuery: results[0]?.evalQuery || '',
     returnType: results[0]?.returnType || 'string',
-    endReturnType: results[0]?.endReturnType || 'string',
     errorText: results.find((r) => r.status === 'ng')?.errorText ?? '',
     comps: { ...comps },
   }

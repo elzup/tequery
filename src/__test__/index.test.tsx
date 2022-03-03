@@ -22,8 +22,47 @@ test('empty', () => {
   expect(tq('', `a`).result).toBe('')
 })
 
+test('return type', () => {
+  expect(tq('', '() => 0').returnType).toBe('function')
+  expect(tq('', `"aa"`).returnType).toBe('string')
+  expect(tq('', `0`).returnType).toBe('number')
+  expect(tq('', `[]`).returnType).toBe('object')
+  expect(tq('', `{}`).returnType).toBe('object')
+  expect(tq('', `undefined`).returnType).toBe('undefined')
+})
+
+test('function return type', () => {
+  const res = tq('base text', `(s) => 1`)
+
+  expect(res.status).toMatchInlineSnapshot(`"ok"`)
+  expect(res.errorText).toMatchInlineSnapshot(`""`)
+  expect(res.result).toMatchInlineSnapshot(`"1"`)
+
+  const recursiveError = tq('base text', `(s) => (() => 1)`)
+
+  expect(recursiveError.status).toMatchInlineSnapshot(`"ng"`)
+  expect(recursiveError.errorText).toMatchInlineSnapshot(`"result type error"`)
+})
+
 test('array end glue', () => {
   expect(tq('base text', '$.split(" ")').result).toBe('base\ntext')
+  expect(tq('base text', '$.split(" ")')).toMatchInlineSnapshot(`
+    Object {
+      "comps": Object {
+        "nonHead": false,
+      },
+      "errorText": "",
+      "evalQuery": "$.split(\\" \\")",
+      "result": "base
+    text",
+      "resultRaw": Array [
+        "base",
+        "text",
+      ],
+      "returnType": "object",
+      "status": "ok",
+    }
+  `)
 })
 
 test('multiline eval', () => {
@@ -70,14 +109,6 @@ test('errors invalid syntax', () => {
   expect(res.status).toBe('ng')
   expect(res.result).toMatchInlineSnapshot(`"base text"`)
   expect(res.errorText).toMatchInlineSnapshot(`"eval error"`)
-})
-
-test('errors return type', () => {
-  const res = tq('base text', `$ && null`)
-
-  expect(res.status).toBe('ng')
-  expect(res.result).toMatchInlineSnapshot(`"base text"`)
-  expect(res.errorText).toMatchInlineSnapshot(`"result type error"`)
 })
 
 test('lines some ok some erorr', () => {

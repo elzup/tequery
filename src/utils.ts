@@ -8,3 +8,24 @@ export const funcEval = (args: Record<string, unknown>, code: string) => {
 
   return func(...Object.values(args))
 }
+export const kindof = (v: unknown) => {
+  if (v === null) {
+    return { v, t: 'null' }
+  } else if (Array.isArray(v)) {
+    return { v, t: 'array ' }
+  }
+  switch (typeof v) {
+    case 'string':
+      return { v, t: 'string' }
+    case 'number':
+      return { v, t: 'number' }
+    case 'function':
+      return { v, t: 'function' }
+    case 'boolean':
+      return { v, t: 'boolean' }
+    case 'undefined':
+      return { v, t: 'undefined' }
+    default:
+      return { v, t: 'objeact' }
+  }
+}
