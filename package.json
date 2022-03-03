@@ -27,7 +27,7 @@
   "dependencies": {},
   "devDependencies": {
     "@sindresorhus/tsconfig": "2.0.0",
-    "@swc/core": "1.2.146",
+    "@swc/core": "1.2.147",
     "@swc/jest": "0.2.20",
     "@types/jest": "27.4.1",
     "@types/react": "17.0.39",
