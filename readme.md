@@ -10,7 +10,7 @@ $ npm install tequery
 
 ## Usage
 
-### basic ($)
+### basic `$`
 
 Basic text transform query.
 `$` is text body variable.
@@ -27,7 +27,7 @@ tq('https://example.com', `.replace('https://', '')`).result
 // => 'example.com'
 ```
 
-### lines ($$)
+### line-run `$$`
 
 ```js
 const text = ` line1
@@ -95,6 +95,19 @@ expect(tq('a+b+c', `$sp('+').join(':')`).result).toBe('a:b:c')
 | `$csv`          | `a,b,c`   | `['a', 'b', 'c']` |
 | `$ls`, `$lines` | `a\nb\nc` | `['a', 'b', 'c']` |
 | `$sp('+')`      | `a+b+c`   | `['a', 'b', 'c']` |
+
+#### more example
+
+vars with line-run
+
+```ts
+const txt = `a,b,c
+d,e,f`
+
+tq(text, `$$csv.join(':')`).result
+// => 'a:b:c\n'
+//  + 'd:e:f'
+```
 
 ## result object
 
