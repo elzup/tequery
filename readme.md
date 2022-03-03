@@ -40,11 +40,28 @@ tq(text, '$$.trim()').result
 // + 'line3'
 ```
 
+## finalize
+
+final process to string from returned value type.
+
+| type                     | process          |
+| ------------------------ | ---------------- |
+| typeof v === 'function'  | `v($)`           |
+| typeof v === 'string'    | `v`              |
+| typeof v === 'number'    | `String(v)`      |
+| typeof v === 'undefined' | `""`             |
+| v === null               | `""`             |
+| Array.isArray(v)         | `v.join("\n")`   |
+| other                    | `String(v)`      |
+| typeof v === 'object'    | `JSON.stringify` |
+
 ### built-in funcs
 
-**len**
+util functions in running scope.
 
 ```js
+tq('', `len('abc')`).result
+// => '3'
 tq('abcde', 'len($)').result
 // => '5'
 
@@ -52,59 +69,43 @@ tq('abcde', 'len($)').result
 tq('abcde', 'len').result
 ```
 
-**lineCount**
+| func            | usage                       | return        |
+| --------------- | --------------------------- | ------------- |
+| `len`           | `len('aaa')`                | 3             |
+| `lineNum`, `ln` | `ln('a\nb')`                | 2             |
+| `count`         | `count('aaa-a-', 'a')`      | 4             |
+| `pack`          | `pack('a\nb\n\nc\n\n\n')`   | `'a\nb\nc\n'` |
+| `shiftl`        | `shiftl('a-b-c-d', '-', 1)` | `'b-c-d'`     |
+| `shiftr`        | `shiftr('a-b-c-d', '-', 1)` | `'a-b-c'`     |
+
+### built-in vars
+
+util vars in running scope.
 
 ```js
-tq('__\n__\n__', `lineCount($)`).result
-// => '3'
+tq('a,b,c', `$csv.join(':')`).result
+// => 'a:b:c'
+expect(tq('', `$tsv.join(':')`).result).toBe()
+expect(tq('a+b+c', `$sp('+').join(':')`).result).toBe('a:b:c')
 ```
 
-**count**
+| vars            | $=        | is                |
+| --------------- | --------- | ----------------- |
+| `$tsv`          | `a\tb\tc` | `['a', 'b', 'c']` |
+| `$csv`          | `a,b,c`   | `['a', 'b', 'c']` |
+| `$ls`, `$lines` | `a\nb\nc` | `['a', 'b', 'c']` |
+| `$sp('+')`      | `a+b+c`   | `['a', 'b', 'c']` |
 
-```js
-tq('aaa-a-', `a`).result
-// => '4'
-```
-
-alias `lineNum`, `nol`
-
-**pack**
-
-```js
-tq(
-  `a
-b
-
-c
-
-`,
-  `pack($)`
-).result
-// => 'a\nb\nc\n'
-```
-
-## other return
+## result object
 
 ```ts
 type Result = {
-  status: 'ok' | 'ng'
+  status: 'ok' | 'ng' // is changed
   result: string
+  resultRaw: unknown
   evalQuery: string // compiled query
   errorText: string
+  returnType: string
   comps: Complements // is shorthund enabled
 }
 ```
-
-## finalize
-
-final process by return value type.
-
-| type                     | process        |
-| ------------------------ | -------------- |
-| typeof v === 'function'  | `v($)`         |
-| typeof v === 'string'    | `v`            |
-| typeof v === 'number'    | `String(v)`    |
-| typeof v === 'undefined' | `""`           |
-| v === null               | `""`           |
-| Array.isArray(v)         | `v.join("\n")` |
-| other                    | `String(v)`    |

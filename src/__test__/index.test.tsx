@@ -139,9 +139,8 @@ test('build in funcs', () => {
     Array [
       "len",
       "count",
-      "lineCount",
       "lineNum",
-      "nol",
+      "ln",
       "pack",
       "shiftl",
       "shiftr",

@@ -1,13 +1,4 @@
-import {
-  len,
-  lineNum,
-  nol,
-  pack,
-  lineCount,
-  count,
-  shiftl,
-  shiftr,
-} from '../funcs'
+import { count, len, lineNum, ln, pack, shiftl, shiftr } from '../funcs'
 
 test('len', () => {
   expect(len([])).toBe(0)
@@ -19,11 +10,11 @@ test('len', () => {
 })
 
 test('lineCount', () => {
-  expect(lineCount('')).toBe(1)
   expect(lineNum('')).toBe(1)
-  expect(nol('abc')).toBe(1)
-  expect(nol('a\nc')).toBe(2)
-  expect(nol('a\n\nc')).toBe(3)
+  expect(lineNum('')).toBe(1)
+  expect(ln('abc')).toBe(1)
+  expect(ln('a\nc')).toBe(2)
+  expect(ln('a\n\nc')).toBe(3)
 })
 
 test('count', () => {
