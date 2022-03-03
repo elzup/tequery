@@ -2,6 +2,7 @@ import { finalize } from './finalize'
 import * as funcs from './funcs'
 import { Complements, preTrans } from './pretrans'
 import { funcEval } from './utils'
+import { vars } from './vars'
 
 export const builtInFuncs = Object.keys(funcs)
 
@@ -35,6 +36,7 @@ const runEval = (embed: string, query: string): RunInfo => {
       {
         $: embed,
         ...funcs,
+        ...vars(embed),
       },
       toReturnCode(query)
     )

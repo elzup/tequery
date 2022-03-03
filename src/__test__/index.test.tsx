@@ -151,24 +151,15 @@ test('build in funcs', () => {
   expect(tq('hello', builtInFuncs.join('&&')).status).toBe('ok')
 })
 
+test('build in vars', () => {
+  expect(tq('a,b,c', `$csv.join(':')`).result).toBe('a:b:c')
+  expect(tq('a\tb\tc', `$tsv.join(':')`).result).toBe('a:b:c')
+  expect(tq('a\nb\nc', `$lines.join(':')`).result).toBe('a:b:c')
+  expect(tq('a\nb\nc', `$ls.join(':')`).result).toBe('a:b:c')
+  expect(tq('a+b+c', `$sp('+').join(':')`).result).toBe('a:b:c')
+})
+
 test('toReturnCode', () => {
   expect(toReturnCode('0 + 1')).toMatchInlineSnapshot(`"return 0 + 1"`)
   expect(toReturnCode(`';' + ';'`)).toMatchInlineSnapshot(`"return ';' + ';'"`)
 })
-
-// test('strict query parse', () => {
-//   const res = tq('hoge@example.com', '"hoge@$".replace(/[@$]/g, "_")')
-
-//   expect(res).toMatchInlineSnapshot(`
-//     Object {
-//       "comps": Object {
-//         "call@": false,
-//         "head@": false,
-//       },
-//       "errorText": "",
-//       "evalQuery": "\\"hoge_$text@\\".replace(/[@$]/g, \\"_\\")",
-//       "result": "hoge__text_",
-//       "status": "ok",
-//     }
-//   `)
-// })
