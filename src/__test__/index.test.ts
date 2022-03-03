@@ -22,13 +22,19 @@ test('empty', () => {
   expect(tq('', `a`).result).toBe('')
 })
 
-test('return type', () => {
+test('finalize and return type', () => {
   expect(tq('', '() => 0').returnType).toBe('function')
+  expect(tq('', '() => 0').result).toBe('0')
   expect(tq('', `"aa"`).returnType).toBe('string')
+  expect(tq('', `"aa"`).result).toBe('aa')
   expect(tq('', `0`).returnType).toBe('number')
-  expect(tq('', `[]`).returnType).toBe('object')
-  expect(tq('', `{}`).returnType).toBe('object')
+  expect(tq('', `0`).result).toBe('0')
+  expect(tq('', `[1, 2]`).returnType).toBe('object')
+  expect(tq('', `[1, 2]`).result).toBe('1\n2')
+  expect(tq('', `{ a: 1}`).returnType).toBe('object')
+  expect(tq('', `{ a: 1}`).result).toBe('{"a":1}')
   expect(tq('', `undefined`).returnType).toBe('undefined')
+  expect(tq('', `undefined`).result).toBe('')
 })
 
 test('function return type', () => {

@@ -21,5 +21,8 @@ export const finalize = (
       return false
     }
   }
+  if (typeof v === 'object') {
+    return JSON.stringify(v)
+  }
   return String(v)
 }
