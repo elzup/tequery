@@ -158,6 +158,10 @@ test('build in vars', () => {
   expect(tq('a+b+c', `$sp('+').join(':')`).result).toBe('a:b:c')
 })
 
+test('build in vars with line-run', () => {
+  expect(tq('a,b,c\nd,e,f', `$$csv.join(':')`).result).toBe('a:b:c\nd:e:f')
+})
+
 test('toReturnCode', () => {
   expect(toReturnCode('0 + 1')).toMatchInlineSnapshot(`"return 0 + 1"`)
   expect(toReturnCode(`';' + ';'`)).toMatchInlineSnapshot(`"return ';' + ';'"`)
