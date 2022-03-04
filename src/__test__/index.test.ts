@@ -151,3 +151,8 @@ test('build in vars', () => {
 test('build in vars with line-run', () => {
   expect(tq('a,b,c\nd,e,f', `$$csv.join(':')`).result).toBe('a:b:c\nd:e:f')
 })
+
+test('option glue', () => {
+  expect(tq('a,b,c\nd,e,f', `$$csv`, '_').result).toBe('a_b_c_d_e_f')
+  expect(tq('a,b,c\nd,e,f', `$$csv`, { glue: '_' }).result).toBe('a_b_c_d_e_f')
+})

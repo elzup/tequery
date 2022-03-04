@@ -1,13 +1,17 @@
 import { finalize } from './finalize'
 import * as funcs from './funcs'
-import { RunInfo } from './types'
+import { OptionV3, RunInfo } from './types'
 import { funcEval } from './utils'
 import { vars } from './vars'
 
 export const builtInFuncs = Object.keys(funcs)
 export const toReturnCode = (code: string) => `return ${code}`
 
-export const runEval = (embed: string, query: string): RunInfo => {
+export const runEval = (
+  embed: string,
+  query: string,
+  option: OptionV3
+): RunInfo => {
   const resBase = {
     status: 'ok',
     result: embed,
@@ -28,7 +32,7 @@ export const runEval = (embed: string, query: string): RunInfo => {
     )
 
     const returnType = typeof resultRaw
-    const result = finalize(resultRaw, embed)
+    const result = finalize(resultRaw, embed, { glue: option.glue })
 
     if (typeof result === 'string') {
       return { ...resBase, status: 'ok', result, returnType, resultRaw }

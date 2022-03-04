@@ -1,12 +1,13 @@
 export const finalize = (
   v: unknown,
   text: string,
+  { glue }: { glue: string },
   end = false
 ): string | false => {
   if (v === null || v === undefined) {
     return ''
   } else if (Array.isArray(v)) {
-    return v.join('\n')
+    return v.join(glue)
   }
 
   if (typeof v === 'function') {
@@ -16,7 +17,7 @@ export const finalize = (
     try {
       const endResult = v(text)
 
-      return finalize(endResult, text, true)
+      return finalize(endResult, text, { glue }, true)
     } catch (_e) {
       return false
     }
