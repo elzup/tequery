@@ -1,27 +1,15 @@
 import { finalize } from './finalize'
 import * as funcs from './funcs'
-import { Complements, preTrans } from './pretrans'
+import { preTrans } from './pretrans'
+import { Complements, Result, RunInfo } from './types'
 import { funcEval } from './utils'
 import { vars } from './vars'
 
 export const builtInFuncs = Object.keys(funcs)
 
-type RunInfo = {
-  status: 'ok' | 'ng'
-  resultRaw: unknown
-  result: string
-  evalQuery: string
-  errorText: string
-  returnType: string
-}
-
-type Result = RunInfo & {
-  comps: Complements
-}
-
 export const toReturnCode = (code: string) => `return ${code}`
 
-const runEval = (embed: string, query: string): RunInfo => {
+export const runEval = (embed: string, query: string): RunInfo => {
   const resBase = {
     status: 'ok',
     result: embed,
