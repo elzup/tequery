@@ -1,4 +1,4 @@
-import { builtInFuncs, tequery as tq, toReturnCode } from '..'
+import { tequery as tq } from '..'
 
 const multilineText = `line1
 line2
@@ -140,24 +140,6 @@ x
   `)
 })
 
-test('build in funcs', () => {
-  expect(builtInFuncs).toMatchInlineSnapshot(`
-    Array [
-      "len",
-      "count",
-      "lineNum",
-      "ln",
-      "pack",
-      "shiftl",
-      "shiftr",
-      "json",
-      "jsonf",
-    ]
-  `)
-
-  expect(tq('hello', builtInFuncs.join('&&')).status).toBe('ok')
-})
-
 test('build in vars', () => {
   expect(tq('a,b,c', `$csv.join(':')`).result).toBe('a:b:c')
   expect(tq('a\tb\tc', `$tsv.join(':')`).result).toBe('a:b:c')
@@ -168,9 +150,4 @@ test('build in vars', () => {
 
 test('build in vars with line-run', () => {
   expect(tq('a,b,c\nd,e,f', `$$csv.join(':')`).result).toBe('a:b:c\nd:e:f')
-})
-
-test('toReturnCode', () => {
-  expect(toReturnCode('0 + 1')).toMatchInlineSnapshot(`"return 0 + 1"`)
-  expect(toReturnCode(`';' + ';'`)).toMatchInlineSnapshot(`"return ';' + ';'"`)
 })

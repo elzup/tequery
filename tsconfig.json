@@ -9,5 +9,6 @@
     "declaration": true,
     "noUnusedLocals": false
   },
-  "include": ["./src"]
+  "include": ["./src"],
+  "exclude": ["./dist"]
 }
