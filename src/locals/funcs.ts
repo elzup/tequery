@@ -1,7 +1,7 @@
 export const len = (text: string | unknown[]) => text.length
 
-export const count = (text: string, q: string) =>
-  (text.match(new RegExp(q, 'g')) || []).length
+export const count = (text: string, regexStr: string) =>
+  (text.match(new RegExp(regexStr, 'g')) || []).length
 
 export const lineNum = (text: string) => text.split('\n').length
 export const ln = lineNum
