@@ -1,16 +1,15 @@
 import { finalize } from './finalize'
-import * as funcs from './funcs'
+import * as funcs from './locals/funcs'
 import { OptionV3, RunInfo } from './types'
 import { funcEval } from './utils'
-import { vars } from './vars'
+import { vars } from './locals/vars'
 
-export const builtInFuncs = Object.keys(funcs)
 export const toReturnCode = (code: string) => `return ${code}`
 
 export const runEval = (
   embed: string,
   query: string,
-  option: OptionV3
+  option: OptionV3 = { glue: '\n' }
 ): RunInfo => {
   const resBase = {
     status: 'ok',

@@ -1,7 +1,8 @@
-import { runEval, toReturnCode, builtInFuncs } from '../runEval'
+import { runEval, toReturnCode } from '../runEval'
+import { builtInFuncKeys } from '../locals/constants'
 
 test('build in funcs list', () => {
-  expect(builtInFuncs).toMatchInlineSnapshot(`
+  expect(builtInFuncKeys).toMatchInlineSnapshot(`
     Array [
       "len",
       "count",
@@ -15,8 +16,9 @@ test('build in funcs list', () => {
     ]
   `)
 })
+
 test('build in funcs', () => {
-  expect(runEval('hello', builtInFuncs.join('&&')).status).toBe('ok')
+  expect(runEval('hello', builtInFuncKeys.join('&&')).status).toBe('ok')
 })
 
 test('toReturnCode', () => {

@@ -8,7 +8,7 @@ import {
   pack,
   shiftl,
   shiftr,
-} from '../funcs'
+} from '../locals/funcs'
 
 test('len', () => {
   expect(len([])).toBe(0)
