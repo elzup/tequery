@@ -14,8 +14,10 @@ export const getCharacts = (text: string): Characts => {
   if (text.includes('\n')) characts.multiline = true
   const firstLine = text.split('\n')[0]
 
-  if (firstLine.split(',').length >= 3) characts.csvLike = true
-  if (firstLine.split('\t').length >= 3) characts.tsvLike = true
+  if (firstLine) {
+    if (firstLine.split(',').length >= 3) characts.csvLike = true
+    if (firstLine.split('\t').length >= 3) characts.tsvLike = true
+  }
 
   return characts
 }
