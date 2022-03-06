@@ -1,5 +1,14 @@
-export const funcEval = (args: Record<string, unknown>, code: string) => {
-  const func = Function(...Object.keys(args), code)
+const globals = {
+  window: null,
+  document: null,
+  console: null,
+  process: null,
+}
 
-  return func(...Object.values(args))
+export const funcEval = (args: Record<string, unknown>, code: string) => {
+  const argsAll = { ...args, ...globals }
+
+  const func = Function(...Object.keys(argsAll), code)
+
+  return func(...Object.values(argsAll))
 }
