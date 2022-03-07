@@ -1,6 +1,7 @@
 type Dict = {
   name: string
   code: string
+  bindCode?: string
   desc: string
   docCode?: string
   goodInput: string
@@ -17,6 +18,7 @@ const funcs: Dict[] = [
   {
     name: 'count',
     code: `count($, '-')`,
+    bindCode: `_count('-')`,
     desc: 'count q in text',
     docCode: `count(text: string, q: string)`,
     goodInput: `1-2-3-4-`,
@@ -38,6 +40,7 @@ const funcs: Dict[] = [
   {
     name: `pack`,
     code: `pack($, 1)`,
+    bindCode: `_pack(1)`,
     desc: 'remove chained newline',
     docCode: `pack(text: string, n = 1)`,
     goodInput: `line1\n\nline2`,
@@ -45,6 +48,7 @@ const funcs: Dict[] = [
   {
     name: `shiftl`,
     code: `shiftl($$, '-', 1)`,
+    bindCode: `shiftl('-', 1)($$)`,
     desc: `trim left column`,
     docCode: `shiftl(text: string, to = '\t', n = 1)`,
     goodInput: `a-b-c`,
@@ -52,6 +56,7 @@ const funcs: Dict[] = [
   {
     name: `shiftr`,
     code: `shiftr($$, ',', 1)`,
+    bindCode: `shiftr(',', 1)($$)`,
     desc: `trim right column`,
     docCode: `shiftr(text: string, to = '\t', n = 1)`,
     goodInput: `a,b,c`,

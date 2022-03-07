@@ -4,7 +4,7 @@ import { tequery } from '..'
 
 test('all built-in funcs libraried', () => {
   expect(dictionaries.funcs.map(({ name }) => name)).toStrictEqual(
-    builtInFuncKeys
+    builtInFuncKeys.filter((name) => !name.startsWith('_'))
   )
 })
 

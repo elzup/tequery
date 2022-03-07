@@ -6,11 +6,15 @@ test('build in funcs list', () => {
     Array [
       "len",
       "count",
+      "_count",
       "lineNum",
       "ln",
       "pack",
+      "_pack",
       "shiftl",
+      "_shiftl",
       "shiftr",
+      "_shiftr",
       "json",
       "jsonf",
     ]
