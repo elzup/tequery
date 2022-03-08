@@ -9,6 +9,10 @@ import {
   shiftl,
   shiftr,
   cq,
+  _cq,
+  _count,
+  _pack,
+  _shiftr,
 } from '../locals/funcs'
 
 test('len', () => {
@@ -31,11 +35,13 @@ test('lineCount', () => {
 test('count', () => {
   expect(count('aaaa', 'a')).toBe(4)
   expect(count('-hoge-', '-')).toBe(2)
+  expect(_count('-')('-hoge-')).toBe(2)
 })
 
 test('pack', () => {
   expect(pack('a\nb\n\nc\n\n\n\n')).toBe('a\nb\nc\n')
   expect(pack('a\nb\n\nc\n\n\n\n', 2)).toBe('a\nb\n\nc\n\n')
+  expect(_pack(2)('a\nb\n\nc\n\n\n\n')).toBe('a\nb\n\nc\n\n')
 })
 
 test('shiftl shiftr', () => {
@@ -43,6 +49,7 @@ test('shiftl shiftr', () => {
   expect(shiftr('a\tb\tc')).toBe('a\tb')
   expect(shiftl('a,b,c,d', ',', 2)).toBe('c,d')
   expect(shiftr('a,b,c,d', ',', 2)).toBe('a,b')
+  expect(_shiftr(',', 2)('a,b,c,d')).toBe('a,b')
 })
 
 test('json jsonf', () => {
@@ -75,5 +82,6 @@ describe('cq', () => {
     expect(cq('a b,c', ',>')).toBe('a b')
     expect(cq('a,b c\td', 'st>>')).toBe('a,b')
     expect(cq('a,b c\td', 'st>>')).toBe('a,b')
+    expect(_cq('st>>')('a,b c\td')).toBe('a,b')
   })
 })
