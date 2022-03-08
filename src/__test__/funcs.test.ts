@@ -8,6 +8,7 @@ import {
   pack,
   shiftl,
   shiftr,
+  cq,
 } from '../locals/funcs'
 
 test('len', () => {
@@ -54,4 +55,24 @@ test('json jsonf', () => {
 }
 `.trim()
   )
+})
+
+describe('cq', () => {
+  it('cq shift', () => {
+    expect(cq('a,b,c,d,e', '>')).toBe('a,b,c,d')
+    expect(cq('a,b,c,d,e', '<')).toBe('b,c,d,e')
+    expect(cq('a,b,c,d,e', '><')).toBe('b,c,d')
+    expect(cq('a,b,c,d,e', '<>')).toBe('b,c,d')
+    expect(cq('a,b,c,d,e', '<>>')).toBe('b,c')
+    expect(cq('a,b\tc,d e', '<>>')).toBe('b\tc')
+    expect(cq('a,b', '>>')).toBe('')
+    expect(cq('a,b', '>>>')).toBe('')
+  })
+
+  it('cq separator', () => {
+    expect(cq('a\tb,c', 't>')).toBe('a')
+    expect(cq('a b,c', 's>')).toBe('a')
+    expect(cq('a b,c', ',>')).toBe('a b')
+    expect(cq('a,b c\td', 'st>>')).toBe('a,b')
+  })
 })

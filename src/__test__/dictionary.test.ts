@@ -34,6 +34,7 @@ test('dictionary sample test', () => {
     	\\"a\\": 1,
     	\\"b\\": 2
     }",
+      "del,del,ok,ok |> cq($$, '><') => del,ok",
     ]
   `)
 })

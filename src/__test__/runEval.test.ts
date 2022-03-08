@@ -17,12 +17,15 @@ test('build in funcs list', () => {
       "_shiftr",
       "json",
       "jsonf",
+      "cq",
     ]
   `)
 })
 
 test('build in funcs', () => {
-  expect(runEval('hello', builtInFuncKeys.join('&&')).status).toBe('ok')
+  expect(runEval('hello', builtInFuncKeys.join('&&') + ' && true').status).toBe(
+    'ok'
+  )
 })
 
 test('toReturnCode', () => {

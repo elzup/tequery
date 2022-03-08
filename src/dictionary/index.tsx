@@ -75,6 +75,14 @@ const funcs: Dict[] = [
     docCode: `jsonf(value: any)`,
     goodInput: ``,
   },
+  {
+    name: `cq`,
+    code: `cq($$, '><')`,
+    desc: `cell pick query`,
+    bindCode: `_cq('><')($$)`,
+    docCode: `cq($$, ',>>')`,
+    goodInput: `del,del,ok,ok`,
+  },
 ]
 
 const vars: Dict[] = [
