@@ -18,6 +18,7 @@ test('build in funcs list', () => {
       "json",
       "jsonf",
       "cq",
+      "_cq",
     ]
   `)
 })

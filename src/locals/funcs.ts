@@ -61,3 +61,4 @@ export const cq = (text: string, code: string) => {
   if (cells.length === 0) return ''
   return sps.reduce((p, c, i) => `${p}${c}${cells[i + 1]}`, cells[0])
 }
+export const _cq = textCurry(cq)

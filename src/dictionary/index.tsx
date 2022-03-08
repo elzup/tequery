@@ -77,11 +77,11 @@ const funcs: Dict[] = [
   },
   {
     name: `cq`,
-    code: `cq($$, '><')`,
+    code: `cq($$, '><<')`,
     desc: `cell pick query`,
     bindCode: `_cq('><')($$)`,
-    docCode: `cq($$, ',>>')`,
-    goodInput: `del,del,ok,ok`,
+    docCode: `cq($$, ',><<')`,
+    goodInput: `del,ok,del,del`,
   },
 ]
 

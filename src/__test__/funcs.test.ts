@@ -74,5 +74,6 @@ describe('cq', () => {
     expect(cq('a b,c', 's>')).toBe('a')
     expect(cq('a b,c', ',>')).toBe('a b')
     expect(cq('a,b c\td', 'st>>')).toBe('a,b')
+    expect(cq('a,b c\td', 'st>>')).toBe('a,b')
   })
 })
