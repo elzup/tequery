@@ -30,7 +30,7 @@
     "@swc/core": "1.2.165",
     "@swc/jest": "0.2.20",
     "@types/jest": "27.4.1",
-    "@types/react": "17.0.39",
+    "@types/react": "17.0.44",
     "eslint": "8.10.0",
     "eslint-config-nzap": "5.1.0",
     "jest": "27.5.1",
