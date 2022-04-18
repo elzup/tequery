@@ -100,4 +100,12 @@ const vars: Dict[] = [
   },
 ]
 
+type DictByName = { [name: string]: Dict }
+
 export const dictionaries = { funcs, vars }
+
+export const dictionariesFlat = [...funcs, ...vars]
+export const dictionariesByName = dictionariesFlat.reduce((p, c) => {
+  p[c.name] = c
+  return p
+}, {} as DictByName)
