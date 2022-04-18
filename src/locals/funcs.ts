@@ -36,8 +36,22 @@ export const json = JSON.stringify
 export const jsonf = (v: unknown) => JSON.stringify(v, null, '\t')
 
 /** cell query */
-export const cq = (text: string, code: string) => {
-  const splits = (code.match(/(.*?)[<>]/)?.[1] || ',st')
+
+type CqOption = {
+  spChars: string
+  ops: string
+}
+export const cq = (text: string, option: string | CqOption) => {
+  if (typeof option === 'string') {
+    const m = option.match(/(.*?)([.-<>]*)/)
+    const spChars = m?.[0] || ',st'
+    const ops = m?.[1] || ''
+
+    return cq(text, { spChars, ops })
+  }
+  const { spChars, ops } = option
+
+  const splits = spChars
     .split('')
     .map((v) => ({ ',': ',', s: ' ', t: '\\t' }[v]))
     .filter(Boolean)
@@ -47,8 +61,8 @@ export const cq = (text: string, code: string) => {
 
   const cells = text.split(spRe)
 
-  const lc = count(code, '<')
-  const rc = count(code, '>')
+  const lc = count(ops, '<')
+  const rc = count(ops, '>')
 
   ;[...Array(lc)].forEach(() => {
     cells.shift()
