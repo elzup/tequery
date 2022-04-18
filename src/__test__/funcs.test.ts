@@ -76,11 +76,18 @@ describe('cq', () => {
     expect(cq('a,b', '>>>')).toBe('')
   })
 
+  it('cq pick', () => {
+    expect(cq('a,b,c,d,e', '.')).toBe('a')
+    expect(cq('a,b,c,d,e', '..')).toBe('a,b')
+    expect(cq('a,b,c,d,e', '_.')).toBe('b')
+    expect(cq('a,b,c,d,e', '_._.')).toBe('b,d')
+    expect(cq('a,b,c,d,e', '_')).toBe('')
+  })
+
   it('cq separator', () => {
     expect(cq('a\tb,c', 't>')).toBe('a')
     expect(cq('a b,c', 's>')).toBe('a')
     expect(cq('a b,c', ',>')).toBe('a b')
-    expect(cq('a,b c\td', 'st>>')).toBe('a,b')
     expect(cq('a,b c\td', 'st>>')).toBe('a,b')
     expect(_cq('st>>')('a,b c\td')).toBe('a,b')
   })
