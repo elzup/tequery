@@ -97,6 +97,10 @@ describe('cq', () => {
     expect(_cq('st>>')('a,b c\td')).toBe('a,b')
   })
 
+  it('complex query', () => {
+    expect(cq('a,b,c,d,e', '<<._.')).toBe('c,e')
+  })
+
   it('obj arg', () => {
     const res = cq('a,b,c,d', {
       spChars: ',',
