@@ -75,6 +75,10 @@ describe('cq', () => {
     expect(cq('a,b', '>>')).toBe('')
     expect(cq('a,b', '>>>')).toBe('')
   })
+  it('cq last one', () => {
+    expect(cq('a', '')).toBe('a')
+    expect(cq('b,a,b', '><')).toBe('a')
+  })
 
   it('cq pick', () => {
     expect(cq('a,b,c,d,e', '.')).toBe('a')

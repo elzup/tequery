@@ -99,8 +99,6 @@ export const cq = (text: string, option: string | CqOption): string => {
   const pickCells: (string | undefined)[] = []
   const pickSps: (string | undefined)[] = []
 
-  console.log({ opsPick })
-
   opsPick.forEach((op) => {
     switch (op) {
       case '.': {
@@ -116,10 +114,13 @@ export const cq = (text: string, option: string | CqOption): string => {
     }
   })
 
-  if (opsPick.length > 0) {
-    return pickCells.map((v, i) => `${v}${pickSps[i + 1] || ''}`).join('')
-  }
-  if (cells.length === 0) return ''
-  return sps.reduce((p, c, i) => `${p}${c}${cells[i + 1]}`, cells[0]) || ''
+  const [resCells, resSps] =
+    opsPick.length === 0 ? [cells, sps] : [pickCells, pickSps]
+
+  // if (resCells.length === 0) return ''
+
+  const tail = resCells.pop() || ''
+
+  return resCells.map((v, i) => `${v}${resSps[i] || ''}`).join('') + tail
 }
 export const _cq = textCurry(cq)
