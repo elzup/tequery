@@ -96,4 +96,18 @@ describe('cq', () => {
     expect(cq('a,b c\td', 'st>>')).toBe('a,b')
     expect(_cq('st>>')('a,b c\td')).toBe('a,b')
   })
+
+  it('obj arg', () => {
+    const res = cq('a,b,c,d', {
+      spChars: ',',
+      opsShift: ['>', '<'],
+      opsPick: [],
+    })
+    const comped = cq('a,b,c,d', { opsShift: ['>', '<'] })
+
+    expect(res).toBe('b,c')
+    expect(comped).toBe('b,c')
+    expect(cq('a,b,c,d', { opsShift: '><' })).toBe('b,c')
+    expect(cq('a,b,c,d', { opsPick: '..' })).toBe('a,b')
+  })
 })

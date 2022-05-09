@@ -51,23 +51,42 @@ type CqOption = {
   opsShift: OpShift[]
   opsPick: OpPick[]
 }
+type CqOptionArg = {
+  spChars?: string
+  opsShift?: OpShift[] | string
+  opsPick?: OpPick[] | string
+}
 
 const isOpShift = (v: any): v is OpShift => OP_SHIFT.includes(v)
 const isOpPick = (v: any): v is OpPick => OP_PICK.includes(v)
 // const isOp = (v: string): v is Op => OPS.includes(v)
+const defaultSpChars = ',st'
 
-const cqOptionParse = (option: string | CqOption): CqOption => {
-  if (typeof option !== 'string') return option
+const toCqOption = (option: CqOptionArg): CqOption => {
+  return {
+    spChars: option.spChars || defaultSpChars,
+    opsShift:
+      typeof option.opsShift === 'string'
+        ? option.opsShift?.split('').filter(isOpShift)
+        : option.opsShift ?? [],
+    opsPick:
+      typeof option.opsPick === 'string'
+        ? option.opsPick?.split('').filter(isOpPick)
+        : option.opsPick ?? [],
+  }
+}
+const cqOptionParse = (option: string | CqOptionArg): CqOption => {
+  if (typeof option !== 'string') return toCqOption(option)
 
   const m = option.match(new RegExp(`^(.*?)([${OPS.join('')}]*)$`))
-  const spChars = m?.[1] || ',st'
+  const spChars = m?.[1] || defaultSpChars
   const opsShift = (m?.[2] || '').split('').filter(isOpShift)
   const opsPick = (m?.[2] || '').split('').filter(isOpPick)
 
   return { spChars, opsPick, opsShift }
 }
 
-export const cq = (text: string, option: string | CqOption): string => {
+export const cq = (text: string, option: string | CqOptionArg): string => {
   const { spChars, opsShift, opsPick } = cqOptionParse(option)
 
   const splits = spChars
