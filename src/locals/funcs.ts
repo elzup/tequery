@@ -37,42 +37,89 @@ export const jsonf = (v: unknown) => JSON.stringify(v, null, '\t')
 
 /** cell query */
 
+const OP_SHIFT = ['<', '>'] as const
+const OP_PICK = ['_', '.'] as const
+const OPS = [OP_SHIFT, OP_PICK].flat()
+
+type OpShift = typeof OP_SHIFT[number]
+type OpPick = typeof OP_PICK[number]
+// type Op = OpShift | OpPick
+// NOTE: | '=' | ':' | ',' | '|' | '&' | '!' | '+' | '*' | '/' | '%' | '^' | '~'
+
 type CqOption = {
   spChars: string
-  ops: string
+  opsShift: OpShift[]
+  opsPick: OpPick[]
 }
-export const cq = (text: string, option: string | CqOption) => {
-  if (typeof option === 'string') {
-    const m = option.match(/(.*?)([.-<>]*)/)
-    const spChars = m?.[0] || ',st'
-    const ops = m?.[1] || ''
 
-    return cq(text, { spChars, ops })
-  }
-  const { spChars, ops } = option
+const isOpShift = (v: any): v is OpShift => OP_SHIFT.includes(v)
+const isOpPick = (v: any): v is OpPick => OP_PICK.includes(v)
+// const isOp = (v: string): v is Op => OPS.includes(v)
+
+const cqOptionParse = (option: string | CqOption): CqOption => {
+  if (typeof option !== 'string') return option
+
+  const m = option.match(new RegExp(`^(.*?)([${OPS.join('')}]*)$`))
+  const spChars = m?.[1] || ',st'
+  const opsShift = (m?.[2] || '').split('').filter(isOpShift)
+  const opsPick = (m?.[2] || '').split('').filter(isOpPick)
+
+  return { spChars, opsPick, opsShift }
+}
+
+export const cq = (text: string, option: string | CqOption): string => {
+  const { spChars, opsShift, opsPick } = cqOptionParse(option)
 
   const splits = spChars
     .split('')
     .map((v) => ({ ',': ',', s: ' ', t: '\\t' }[v]))
     .filter(Boolean)
     .join('')
+  // sps 追加
   const spRe = new RegExp(`[${splits}]`, 'g')
   const sps = text.match(spRe)?.map((v) => v) || []
 
   const cells = text.split(spRe)
 
-  const lc = count(ops, '<')
-  const rc = count(ops, '>')
+  opsShift.forEach((op) => {
+    switch (op) {
+      case '<': {
+        cells.shift()
+        sps.shift()
+        break
+      }
+      case '>': {
+        cells.pop()
+        sps.pop()
+        break
+      }
+    }
+  })
 
-  ;[...Array(lc)].forEach(() => {
-    cells.shift()
-    sps.shift()
+  const pickCells: (string | undefined)[] = []
+  const pickSps: (string | undefined)[] = []
+
+  console.log({ opsPick })
+
+  opsPick.forEach((op) => {
+    switch (op) {
+      case '.': {
+        pickCells.push(cells.shift())
+        pickSps.push(sps.shift())
+        break
+      }
+      case '_': {
+        cells.shift()
+        sps.shift()
+        break
+      }
+    }
   })
-  ;[...Array(rc)].forEach(() => {
-    cells.pop()
-    sps.pop()
-  })
+
+  if (opsPick.length > 0) {
+    return pickCells.map((v, i) => `${v}${pickSps[i + 1] || ''}`).join('')
+  }
   if (cells.length === 0) return ''
-  return sps.reduce((p, c, i) => `${p}${c}${cells[i + 1]}`, cells[0])
+  return sps.reduce((p, c, i) => `${p}${c}${cells[i + 1]}`, cells[0]) || ''
 }
 export const _cq = textCurry(cq)
