@@ -140,6 +140,6 @@ export const cq = (text: string, option: string | CqOptionArg): string => {
 
   const tail = resCells.pop() || ''
 
-  return resCells.map((v, i) => `${v}${resSps[i] || ''}`).join('') + tail
+  return resCells.map((v, i) => `${v}${resSps[i]}`).join('') + tail
 }
 export const _cq = textCurry(cq)
