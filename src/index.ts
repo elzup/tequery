@@ -10,12 +10,15 @@ export function tequeryLines(
 ): Result {
   const results = text.split('\n').map((line) => runEval(line, query, option))
 
+  /* istanbul ignore next */
+  if (!results[0]) throw new Error('never reach') // always .split('\n').length > 0
+
   return {
     result: results.map((r) => r.result).join(option.glue),
     resultRaw: results.map((r) => r.resultRaw),
     status: results.some((r) => r.status === 'ok') ? 'ok' : 'ng',
-    evalQuery: results[0]?.evalQuery || '',
-    returnType: results[0]?.returnType || 'string',
+    evalQuery: results[0].evalQuery,
+    returnType: results[0].returnType,
     errorText: results.find((r) => r.status === 'ng')?.errorText || '',
     comps,
   }

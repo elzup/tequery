@@ -36,6 +36,7 @@ test('count', () => {
   expect(count('aaaa', 'a')).toBe(4)
   expect(count('-hoge-', '-')).toBe(2)
   expect(_count('-')('-hoge-')).toBe(2)
+  expect(count('abc', 'd')).toBe(0)
 })
 
 test('pack', () => {

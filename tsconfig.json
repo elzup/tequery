@@ -1,5 +1,5 @@
 {
-  "extends": "@sindresorhus/tsconfig",
+  "extends": "@elzup/tsconfig",
   "compilerOptions": {
     "module": "commonjs",
     "esModuleInterop": true,

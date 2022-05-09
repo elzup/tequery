@@ -26,6 +26,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
+    "@elzup/tsconfig": "^1.0.2",
     "@sindresorhus/tsconfig": "2.0.0",
     "@swc/core": "1.2.165",
     "@swc/jest": "0.2.20",

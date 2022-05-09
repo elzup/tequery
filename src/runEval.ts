@@ -21,17 +21,15 @@ export const runEval = (
   }
 
   try {
-    const resultRaw = funcEval(
-      {
-        $: embed,
-        ...funcs,
-        ...vars(embed),
-      },
-      toReturnCode(query)
-    )
+    const args = {
+      $: embed,
+      ...funcs,
+      ...vars(embed),
+    }
+    const resultRaw = funcEval(args, toReturnCode(query))
 
     const returnType = typeof resultRaw
-    const result = finalize(resultRaw, embed, { glue: option.glue })
+    const result = finalize(resultRaw, embed, { glue: option.glue }, args)
 
     if (typeof result === 'string') {
       return { ...resBase, status: 'ok', result, returnType, resultRaw }

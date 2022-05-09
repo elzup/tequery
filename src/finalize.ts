@@ -1,7 +1,11 @@
+import { toReturnCode } from './runEval'
+import { funcEval } from './utils'
+
 export const finalize = (
   v: unknown,
   text: string,
   { glue }: { glue: string },
+  args: Record<string, unknown>,
   end = false
 ): string | false => {
   if (v === null || v === undefined) {
@@ -11,13 +15,19 @@ export const finalize = (
   }
 
   if (typeof v === 'function') {
-    if (end) {
-      return false
-    }
-    try {
-      const endResult = v(text)
+    if (end) return false
 
-      return finalize(endResult, text, { glue }, true)
+    try {
+      const resultRaw = funcEval(
+        {
+          ...args,
+          _f: v,
+          text,
+        },
+        toReturnCode('_f(text)')
+      )
+
+      return finalize(resultRaw, text, { glue }, args, true)
     } catch (_e) {
       return false
     }

@@ -35,6 +35,8 @@ test('finalize and return type', () => {
   expect(tq('', `{ a: 1}`).result).toBe('{"a":1}')
   expect(tq('', `undefined`).returnType).toBe('undefined')
   expect(tq('', `undefined`).result).toBe('')
+  expect(tq('', '() => Array(-1)').status).toBe('ng')
+  expect(tq('', '() => () => 1').status).toBe('ng')
 })
 
 test('function return type', () => {
@@ -155,4 +157,10 @@ test('build in vars with line-run', () => {
 test('option glue', () => {
   expect(tq('a,b,c\nd,e,f', `$$csv`, '_').result).toBe('a_b_c_d_e_f')
   expect(tq('a,b,c\nd,e,f', `$$csv`, { glue: '_' }).result).toBe('a_b_c_d_e_f')
+})
+
+test('every ng', () => {
+  const res = tq('a\na', `$$.split(',')[1][1]`)
+
+  expect(res.status).toBe('ng')
 })
