@@ -1,6 +1,6 @@
 {
   "name": "tequery",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "text transform query",
   "access": "public",
   "repository": "elzup/tequery",
