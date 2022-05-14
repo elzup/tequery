@@ -13,7 +13,7 @@ const textCurry =
 
 export const len = (text: string | unknown[]) => text.length
 
-export const count = (text: string, regexStr: string) =>
+export const count = (text: string, regexStr: string | RegExp) =>
   (text.match(new RegExp(regexStr, 'g')) || []).length
 export const _count = textCurry(count)
 

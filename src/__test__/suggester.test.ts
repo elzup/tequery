@@ -10,39 +10,8 @@ test('suggester', () => {
     }
   `)
 
-  expect(getAttrs('a\nb')).toMatchInlineSnapshot(`
-    Object {
-      "cellLike": false,
-      "csvLike": false,
-      "multiline": true,
-      "tsvLike": false,
-    }
-  `)
-
-  expect(getAttrs('a,b,c\nd,e,n')).toMatchInlineSnapshot(`
-    Object {
-      "cellLike": false,
-      "csvLike": true,
-      "multiline": true,
-      "tsvLike": false,
-    }
-  `)
-
-  expect(getAttrs('a\tb\tc')).toMatchInlineSnapshot(`
-    Object {
-      "cellLike": false,
-      "csvLike": false,
-      "multiline": false,
-      "tsvLike": true,
-    }
-  `)
-
-  expect(getAttrs('ab\tc')).toMatchInlineSnapshot(`
-    Object {
-      "cellLike": false,
-      "csvLike": false,
-      "multiline": false,
-      "tsvLike": false,
-    }
-  `)
+  expect(getAttrs('a\nb').multiline).toBe(true)
+  expect(getAttrs('a,b,c\nd,e,n').csvLike).toBe(true)
+  expect(getAttrs('a\tb\tc').tsvLike).toBe(true)
+  expect(getAttrs('a,b,c,d,e').cellLike).toBe(true)
 })

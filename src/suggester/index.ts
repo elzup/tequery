@@ -1,3 +1,5 @@
+import { count } from '../locals/funcs'
+
 type Attrs = Record<AttrType, boolean>
 type Suggestion = {
   key: AttrType
@@ -16,15 +18,15 @@ const suggests: Suggestion[] = [
   },
   {
     key: 'csvLike',
-    check: ({ line1 }) => (line1 ?? '').split(',').length >= 3,
+    check: ({ line1 }) => count(line1 ?? '', ',') >= 2,
   },
   {
     key: 'tsvLike',
-    check: ({ line1 }) => (line1 ?? '').split('\t').length >= 3,
+    check: ({ line1 }) => count(line1 ?? '', '\t') >= 2,
   },
   {
     key: 'cellLike',
-    check: ({ line1 }) => (line1 ?? '').split(/\t,.\s-/).length >= 3,
+    check: ({ line1 }) => count(line1 ?? '', /[\t,. -]/g) >= 3,
   },
 ]
 
