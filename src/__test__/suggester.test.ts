@@ -3,6 +3,7 @@ import { getAttrs } from '../suggester'
 test('suggester', () => {
   expect(getAttrs('hello')).toMatchInlineSnapshot(`
     Object {
+      "cellLike": false,
       "csvLike": false,
       "multiline": false,
       "tsvLike": false,
@@ -11,6 +12,7 @@ test('suggester', () => {
 
   expect(getAttrs('a\nb')).toMatchInlineSnapshot(`
     Object {
+      "cellLike": false,
       "csvLike": false,
       "multiline": true,
       "tsvLike": false,
@@ -19,6 +21,7 @@ test('suggester', () => {
 
   expect(getAttrs('a,b,c\nd,e,n')).toMatchInlineSnapshot(`
     Object {
+      "cellLike": false,
       "csvLike": true,
       "multiline": true,
       "tsvLike": false,
@@ -27,6 +30,7 @@ test('suggester', () => {
 
   expect(getAttrs('a\tb\tc')).toMatchInlineSnapshot(`
     Object {
+      "cellLike": false,
       "csvLike": false,
       "multiline": false,
       "tsvLike": true,
@@ -35,6 +39,7 @@ test('suggester', () => {
 
   expect(getAttrs('ab\tc')).toMatchInlineSnapshot(`
     Object {
+      "cellLike": false,
       "csvLike": false,
       "multiline": false,
       "tsvLike": false,

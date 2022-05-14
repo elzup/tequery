@@ -1,3 +1,5 @@
+import { AttrType } from '../suggester'
+
 type Dict = {
   name: string
   code: string
@@ -5,6 +7,7 @@ type Dict = {
   desc: string
   docCode?: string
   goodInput: string
+  targetAttrs?: Partial<Record<AttrType, number>>
 }
 
 const funcs: Dict[] = [
@@ -29,6 +32,7 @@ const funcs: Dict[] = [
     desc: `number of lines`,
     docCode: `lineNum(text: string)`,
     goodInput: `line1\nline2`,
+    targetAttrs: { multiline: 1 },
   },
   {
     name: `ln`,
@@ -36,6 +40,7 @@ const funcs: Dict[] = [
     desc: `alias of lineNum`,
     docCode: `ln(text: string)`,
     goodInput: `line1\nline2`,
+    targetAttrs: { multiline: 1 },
   },
   {
     name: `pack`,
@@ -44,6 +49,7 @@ const funcs: Dict[] = [
     desc: 'remove chained newline',
     docCode: `pack(text: string, n = 1)`,
     goodInput: `line1\n\nline2`,
+    targetAttrs: { multiline: 1 },
   },
   {
     name: `shiftl`,
@@ -52,6 +58,7 @@ const funcs: Dict[] = [
     desc: `trim left column`,
     docCode: `shiftl(text: string, to = '\t', n = 1)`,
     goodInput: `a-b-c`,
+    targetAttrs: { cellLike: 1 },
   },
   {
     name: `shiftr`,
@@ -60,6 +67,7 @@ const funcs: Dict[] = [
     desc: `trim right column`,
     docCode: `shiftr(text: string, to = '\t', n = 1)`,
     goodInput: `a,b,c`,
+    targetAttrs: { cellLike: 1 },
   },
   {
     name: `json`,
@@ -67,6 +75,7 @@ const funcs: Dict[] = [
     desc: `to json string`,
     docCode: `json(value: any)`,
     goodInput: ``,
+    targetAttrs: { cellLike: 1 },
   },
   {
     name: `jsonf`,

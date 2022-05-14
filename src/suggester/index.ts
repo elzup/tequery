@@ -8,7 +8,7 @@ type Suggestion = {
   }) => boolean
 }
 
-export type AttrType = 'multiline' | 'csvLike' | 'tsvLike'
+export type AttrType = 'multiline' | 'csvLike' | 'tsvLike' | 'cellLike'
 const suggests: Suggestion[] = [
   {
     key: 'multiline',
@@ -22,15 +22,20 @@ const suggests: Suggestion[] = [
     key: 'tsvLike',
     check: ({ line1 }) => (line1 ?? '').split('\t').length >= 3,
   },
+  {
+    key: 'cellLike',
+    check: ({ line1 }) => (line1 ?? '').split(/\t,.\s-/).length >= 3,
+  },
 ]
 
-export const attrTypes = suggests.map((v) => v.key)
+export const attrKeys = suggests.map((v) => v.key)
 
 export const getAttrs = (text: string): Attrs => {
-  const attrs: Attrs = {
+  const attrs = {
     multiline: false,
     csvLike: false,
     tsvLike: false,
+    cellLike: false,
   }
 
   const lines = text.split('\n')
