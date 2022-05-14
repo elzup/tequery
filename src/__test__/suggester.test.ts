@@ -1,7 +1,7 @@
-import { getCharacts } from '../suggester'
+import { getAttrs } from '../suggester'
 
 test('suggester', () => {
-  expect(getCharacts('hello')).toMatchInlineSnapshot(`
+  expect(getAttrs('hello')).toMatchInlineSnapshot(`
     Object {
       "csvLike": false,
       "multiline": false,
@@ -9,7 +9,7 @@ test('suggester', () => {
     }
   `)
 
-  expect(getCharacts('a\nb')).toMatchInlineSnapshot(`
+  expect(getAttrs('a\nb')).toMatchInlineSnapshot(`
     Object {
       "csvLike": false,
       "multiline": true,
@@ -17,7 +17,7 @@ test('suggester', () => {
     }
   `)
 
-  expect(getCharacts('a,b,c\nd,e,n')).toMatchInlineSnapshot(`
+  expect(getAttrs('a,b,c\nd,e,n')).toMatchInlineSnapshot(`
     Object {
       "csvLike": true,
       "multiline": true,
@@ -25,7 +25,7 @@ test('suggester', () => {
     }
   `)
 
-  expect(getCharacts('a\tb\tc')).toMatchInlineSnapshot(`
+  expect(getAttrs('a\tb\tc')).toMatchInlineSnapshot(`
     Object {
       "csvLike": false,
       "multiline": false,
@@ -33,7 +33,7 @@ test('suggester', () => {
     }
   `)
 
-  expect(getCharacts('ab\tc')).toMatchInlineSnapshot(`
+  expect(getAttrs('ab\tc')).toMatchInlineSnapshot(`
     Object {
       "csvLike": false,
       "multiline": false,

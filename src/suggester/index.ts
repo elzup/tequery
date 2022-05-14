@@ -1,9 +1,6 @@
-// TODO: commandLike '$ '
-// TODO: hasColon
-
-type Characts = Record<CharactType, boolean>
+type Attrs = Record<AttrType, boolean>
 type Suggestion = {
-  key: CharactType
+  key: AttrType
   check: (part: {
     text: string
     line1: string | null
@@ -11,7 +8,7 @@ type Suggestion = {
   }) => boolean
 }
 
-type CharactType = 'multiline' | 'csvLike' | 'tsvLike'
+export type AttrType = 'multiline' | 'csvLike' | 'tsvLike'
 const suggests: Suggestion[] = [
   {
     key: 'multiline',
@@ -26,10 +23,11 @@ const suggests: Suggestion[] = [
     check: ({ line1 }) => (line1 ?? '').split('\t').length >= 3,
   },
 ]
-// const charactTypes = suggests.map((v) => v.key)
 
-export const getCharacts = (text: string): Characts => {
-  const characts: Characts = {
+export const attrTypes = suggests.map((v) => v.key)
+
+export const getAttrs = (text: string): Attrs => {
+  const attrs: Attrs = {
     multiline: false,
     csvLike: false,
     tsvLike: false,
@@ -39,14 +37,14 @@ export const getCharacts = (text: string): Characts => {
   const line1 = lines[0] || null
 
   suggests.forEach((s) => {
-    characts[s.key] = s.check({ text, line1, lines })
+    attrs[s.key] = s.check({ text, line1, lines })
   })
 
-  return characts
+  return attrs
 }
 
 export const suggester = (text: string) => {
-  const characts = getCharacts(text)
+  const attrs = getAttrs(text)
 
-  return { characts }
+  return { attrs }
 }
