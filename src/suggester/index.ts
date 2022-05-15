@@ -31,14 +31,15 @@ const suggests: Suggestion[] = [
 ]
 
 export const attrKeys = suggests.map((v) => v.key)
+const initialAttrs: Attrs = {
+  multiline: false,
+  csvLike: false,
+  tsvLike: false,
+  cellLike: false,
+}
 
 export const getAttrs = (text: string): Attrs => {
-  const attrs = {
-    multiline: false,
-    csvLike: false,
-    tsvLike: false,
-    cellLike: false,
-  }
+  const attrs = initialAttrs
 
   const lines = text.split('\n')
   const line1 = lines[0] || null
