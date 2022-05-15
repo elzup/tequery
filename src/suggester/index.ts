@@ -4,11 +4,23 @@ type Attrs = Record<AttrType, boolean>
 type Suggestion = {
   key: AttrType
   check: (part: {
+    typeof: TypeOfType
+    textLike: string
     text: string
     line1: string | null
     lines: string[]
   }) => boolean
 }
+type TypeOfType =
+  | 'undefined'
+  | 'object'
+  | 'boolean'
+  | 'number'
+  | 'bigint'
+  | 'string'
+  | 'symbol'
+  | 'function'
+  | 'object'
 
 export type AttrType = 'multiline' | 'csvLike' | 'tsvLike' | 'cellLike'
 const suggests: Suggestion[] = [

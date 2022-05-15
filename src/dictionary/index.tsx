@@ -1,3 +1,4 @@
+import { count } from '../locals/funcs'
 import { AttrType } from '../suggester'
 
 type Dict = {
@@ -7,7 +8,7 @@ type Dict = {
   desc: string
   docCode?: string
   goodInput: string
-  targetAttrs?: Partial<Record<AttrType, number>>
+  suggest?: (text: string, attrs: Partial<Record<AttrType, boolean>>) => number
 }
 
 const funcs: Dict[] = [
@@ -47,7 +48,7 @@ const funcs: Dict[] = [
     desc: 'remove chained newline',
     docCode: `pack(text: string, n = 1)`,
     goodInput: `line1\n\nline2`,
-    targetAttrs: { multiline: 100 },
+    suggest: (text) => (text.includes('\n\n') ? 100 : -100),
   },
   {
     name: `shiftl`,
@@ -56,7 +57,7 @@ const funcs: Dict[] = [
     desc: `trim left column`,
     docCode: `shiftl(text: string, to = '\t', n = 1)`,
     goodInput: `a-b-c`,
-    targetAttrs: { cellLike: 100 },
+    suggest: (text, { cellLike }) => (cellLike ? 100 : -100),
   },
   {
     name: `shiftr`,
