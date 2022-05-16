@@ -1,4 +1,3 @@
-import { count } from '../locals/funcs'
 import { AttrType } from '../suggester'
 
 type Dict = {
@@ -8,7 +7,10 @@ type Dict = {
   desc: string
   docCode?: string
   goodInput: string
-  suggest?: (text: string, attrs: Partial<Record<AttrType, boolean>>) => number
+  suggestText?: (
+    text: string,
+    attrs: Partial<Record<AttrType, boolean>>
+  ) => number /* 100 best match ~ -100 worst */
 }
 
 const funcs: Dict[] = [
@@ -48,7 +50,7 @@ const funcs: Dict[] = [
     desc: 'remove chained newline',
     docCode: `pack(text: string, n = 1)`,
     goodInput: `line1\n\nline2`,
-    suggest: (text) => (text.includes('\n\n') ? 100 : -100),
+    suggestText: (text) => (text.includes('\n\n') ? 100 : -100),
   },
   {
     name: `shiftl`,
@@ -57,7 +59,7 @@ const funcs: Dict[] = [
     desc: `trim left column`,
     docCode: `shiftl(text: string, to = '\t', n = 1)`,
     goodInput: `a-b-c`,
-    suggest: (text, { cellLike }) => (cellLike ? 100 : -100),
+    suggestText: (_text, { cellLike }) => (cellLike ? 100 : -100),
   },
   {
     name: `shiftr`,
@@ -66,7 +68,7 @@ const funcs: Dict[] = [
     desc: `trim right column`,
     docCode: `shiftr(text: string, to = '\t', n = 1)`,
     goodInput: `a,b,c`,
-    targetAttrs: { cellLike: 100 },
+    suggestText: (_text, { cellLike }) => (cellLike ? 100 : -100),
   },
   {
     name: `json`,
@@ -74,6 +76,7 @@ const funcs: Dict[] = [
     desc: `to json string`,
     docCode: `json(value: any)`,
     goodInput: ``,
+    suggestText: (_text, { cellLike }) => (cellLike ? 100 : -100),
   },
   {
     name: `jsonf`,
@@ -81,6 +84,7 @@ const funcs: Dict[] = [
     desc: `to json string with pretty`,
     docCode: `jsonf(value: any)`,
     goodInput: ``,
+    suggestText: (_text, { cellLike }) => (cellLike ? 100 : -100),
   },
   {
     name: `cq`,
@@ -89,7 +93,8 @@ const funcs: Dict[] = [
     bindCode: `_cq('><')($$)`,
     docCode: `cq($$, ',><<')`,
     goodInput: `del,ok,del,del`,
-    targetAttrs: { cellLike: 50, multiline: 50 },
+    suggestText: (_text, { cellLike, multiline }) =>
+      (cellLike ? 50 : 0) + (multiline ? 50 : 0),
   },
 ]
 
