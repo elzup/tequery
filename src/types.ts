@@ -39,11 +39,16 @@ export type Dict = {
 }
 
 export type Attrs = Record<AttrType, boolean>
-export type Suggestion = {
+export type AttrChecker = {
   key: AttrType
   check: (part: {
     text: string
     line1: string | null
     lines: string[]
   }) => boolean
+}
+
+export type Suggestion = {
+  dict: Dict
+  point: number
 }

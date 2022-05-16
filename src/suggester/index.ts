@@ -1,48 +1,17 @@
-import { count } from '../locals/funcs'
-import { Attrs, Suggestion } from '../types'
+import { dictionaries } from '../dictionary'
+import { Suggestion } from '../types'
+import { getAttrsStr } from './attrs'
 
-const suggests: Suggestion[] = [
-  {
-    key: 'multiline',
-    check: ({ lines }) => lines.length > 1,
-  },
-  {
-    key: 'csvLike',
-    check: ({ line1 }) => count(line1 ?? '', ',') >= 2,
-  },
-  {
-    key: 'tsvLike',
-    check: ({ line1 }) => count(line1 ?? '', '\t') >= 2,
-  },
-  {
-    key: 'cellLike',
-    check: ({ line1 }) => count(line1 ?? '', /[\t,. -]/g) >= 3,
-  },
-]
+export const suggester = (v: unknown): Suggestion[] => {
+  const attrs = getAttrsStr(v)
+  const suggestions = dictionaries.funcs.map((dict) => {
+    const ptAny = dict.suggestAny?.(v) ?? 0
+    const ptStr = typeof v !== 'string' ? 0 : dict.suggestText?.(v, attrs) ?? 0
 
-export const attrKeys = suggests.map((v) => v.key)
-const initialAttrs: Attrs = {
-  multiline: false,
-  csvLike: false,
-  tsvLike: false,
-  cellLike: false,
-}
-
-export const getAttrsStr = (text: string): Attrs => {
-  const attrs = initialAttrs
-
-  const lines = text.split('\n')
-  const line1 = lines[0] || null
-
-  suggests.forEach((s) => {
-    attrs[s.key] = s.check({ text, line1, lines })
+    return { dict, point: ptStr + ptAny }
   })
 
-  return attrs
-}
+  suggestions.sort((a, b) => b.point - a.point)
 
-export const suggester = (text: string) => {
-  const attrs = getAttrsStr(text)
-
-  return { attrs }
+  return suggestions
 }
