@@ -7,6 +7,7 @@ type Dict = {
   desc: string
   docCode?: string
   goodInput: string
+  suggestAny?: (input: unknown) => number
   suggestText?: (
     text: string,
     attrs: Partial<Record<AttrType, boolean>>
@@ -76,7 +77,7 @@ const funcs: Dict[] = [
     desc: `to json string`,
     docCode: `json(value: any)`,
     goodInput: ``,
-    suggestText: (_text, { cellLike }) => (cellLike ? 100 : -100),
+    suggestAny: (v) => (typeof v === 'object' ? 100 : -100),
   },
   {
     name: `jsonf`,
@@ -84,7 +85,7 @@ const funcs: Dict[] = [
     desc: `to json string with pretty`,
     docCode: `jsonf(value: any)`,
     goodInput: ``,
-    suggestText: (_text, { cellLike }) => (cellLike ? 100 : -100),
+    suggestAny: (v) => (typeof v === 'object' ? 100 : -100),
   },
   {
     name: `cq`,
