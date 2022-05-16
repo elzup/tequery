@@ -1,16 +1,6 @@
 import { count } from '../locals/funcs'
+import { Attrs, Suggestion } from '../types'
 
-type Attrs = Record<AttrType, boolean>
-type Suggestion = {
-  key: AttrType
-  check: (part: {
-    text: string
-    line1: string | null
-    lines: string[]
-  }) => boolean
-}
-
-export type AttrType = 'multiline' | 'csvLike' | 'tsvLike' | 'cellLike'
 const suggests: Suggestion[] = [
   {
     key: 'multiline',

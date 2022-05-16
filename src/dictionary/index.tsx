@@ -1,18 +1,5 @@
-import { AttrType } from '../suggester'
-
-type Dict = {
-  name: string
-  code: string
-  bindCode?: string
-  desc: string
-  docCode?: string
-  goodInput: string
-  suggestAny?: (input: unknown) => number
-  suggestText?: (
-    text: string,
-    attrs: Partial<Record<AttrType, boolean>>
-  ) => number /* 100 best match ~ -100 worst */
-}
+import { count } from '../locals/funcs'
+import { Dict } from '../types'
 
 const funcs: Dict[] = [
   {
@@ -51,7 +38,11 @@ const funcs: Dict[] = [
     desc: 'remove chained newline',
     docCode: `pack(text: string, n = 1)`,
     goodInput: `line1\n\nline2`,
-    suggestText: (text) => (text.includes('\n\n') ? 100 : -100),
+    suggestText: (text) => {
+      const c = count(text, '\n\n')
+
+      return c === 0 ? -100 : Math.min(100, c * 30)
+    },
   },
   {
     name: `shiftl`,
