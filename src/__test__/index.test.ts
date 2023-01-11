@@ -55,16 +55,16 @@ test('function return type', () => {
 test('array end glue', () => {
   expect(tq('base text', '$.split(" ")').result).toBe('base\ntext')
   expect(tq('base text', '$.split(" ")')).toMatchInlineSnapshot(`
-    Object {
-      "comps": Object {
+    {
+      "comps": {
         "lineRun": false,
         "nonHead": false,
       },
       "errorText": "",
-      "evalQuery": "$.split(\\" \\")",
+      "evalQuery": "$.split(" ")",
       "result": "base
     text",
-      "resultRaw": Array [
+      "resultRaw": [
         "base",
         "text",
       ],
@@ -94,7 +94,7 @@ test('optional comp', () => {
 
   expect(res1.evalQuery).toMatchInlineSnapshot(`"count"`)
   expect(res1.comps).toMatchInlineSnapshot(`
-    Object {
+    {
       "lineRun": false,
       "nonHead": false,
     }
@@ -103,11 +103,9 @@ test('optional comp', () => {
 
   const res2 = tq('base text', `.split(" ").join(",")`)
 
-  expect(res2.evalQuery).toMatchInlineSnapshot(
-    `"$.split(\\" \\").join(\\",\\")"`
-  )
+  expect(res2.evalQuery).toMatchInlineSnapshot(`"$.split(" ").join(",")"`)
   expect(res2.comps).toMatchInlineSnapshot(`
-    Object {
+    {
       "lineRun": false,
       "nonHead": true,
     }

@@ -7,15 +7,15 @@ test.todo('global polish')
 test('invalid line-run query', () => {
   // TODO
   expect(tq("('$$')", "('$$')")).toMatchInlineSnapshot(`
-    Object {
-      "comps": Object {
+    {
+      "comps": {
         "lineRun": true,
         "nonHead": false,
       },
       "errorText": "",
       "evalQuery": "('$')",
       "result": "$",
-      "resultRaw": Array [
+      "resultRaw": [
         "$",
       ],
       "returnType": "string",

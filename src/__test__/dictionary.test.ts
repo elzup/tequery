@@ -15,7 +15,7 @@ test('dictionary sample test', () => {
   )
 
   expect(runs).toMatchInlineSnapshot(`
-    Array [
+    [
       "12345 |> len => 5",
       "1-2-3-4- |> count($, '-') => 4",
       "line1
@@ -29,10 +29,10 @@ test('dictionary sample test', () => {
     line2",
       "a-b-c |> shiftl($$, '-', 1) => b-c",
       "a,b,c |> shiftr($$, ',', 1) => a,b",
-      " |> json({ a: 1, b: 2 }) => {\\"a\\":1,\\"b\\":2}",
+      " |> json({ a: 1, b: 2 }) => {"a":1,"b":2}",
       " |> jsonf({ a: 1, b: 2 }) => {
-    	\\"a\\": 1,
-    	\\"b\\": 2
+    	"a": 1,
+    	"b": 2
     }",
       "del,ok,del,del |> cq($$, '><<') => del",
     ]

@@ -3,7 +3,7 @@ import { getAttrsStr } from '../suggester/attrs'
 
 test('getAttrs', () => {
   expect(getAttrsStr('hello')).toMatchInlineSnapshot(`
-    Object {
+    {
       "cellLike": false,
       "csvLike": false,
       "multiline": false,
@@ -25,49 +25,49 @@ describe('suggester', () => {
     ])
 
     expect(suggestResult).toMatchInlineSnapshot(`
-          Array [
-            Array [
-              "shiftl",
-              100,
-            ],
-            Array [
-              "shiftr",
-              100,
-            ],
-            Array [
-              "cq",
-              50,
-            ],
-            Array [
-              "len",
-              0,
-            ],
-            Array [
-              "count",
-              0,
-            ],
-            Array [
-              "lineNum",
-              0,
-            ],
-            Array [
-              "ln",
-              0,
-            ],
-            Array [
-              "pack",
-              -100,
-            ],
-            Array [
-              "json",
-              -100,
-            ],
-            Array [
-              "jsonf",
-              -100,
-            ],
-          ]
-      `)
+      [
+        [
+          "shiftl",
+          100,
+        ],
+        [
+          "shiftr",
+          100,
+        ],
+        [
+          "cq",
+          50,
+        ],
+        [
+          "len",
+          0,
+        ],
+        [
+          "count",
+          0,
+        ],
+        [
+          "lineNum",
+          0,
+        ],
+        [
+          "ln",
+          0,
+        ],
+        [
+          "pack",
+          -100,
+        ],
+        [
+          "json",
+          -100,
+        ],
+        [
+          "jsonf",
+          -100,
+        ],
+      ]
+    `)
   })
   it('basic sample pack', () => {
     const suggestResult = suggester('a\n\nb\nc\nd\n\ne\n\nf').map((v) => [
@@ -76,44 +76,44 @@ describe('suggester', () => {
     ])
 
     expect(suggestResult).toMatchInlineSnapshot(`
-      Array [
-        Array [
+      [
+        [
           "pack",
           90,
         ],
-        Array [
+        [
           "cq",
           50,
         ],
-        Array [
+        [
           "len",
           0,
         ],
-        Array [
+        [
           "count",
           0,
         ],
-        Array [
+        [
           "lineNum",
           0,
         ],
-        Array [
+        [
           "ln",
           0,
         ],
-        Array [
+        [
           "shiftl",
           -100,
         ],
-        Array [
+        [
           "shiftr",
           -100,
         ],
-        Array [
+        [
           "json",
           -100,
         ],
-        Array [
+        [
           "jsonf",
           -100,
         ],

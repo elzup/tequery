@@ -3,7 +3,7 @@ import { builtInFuncKeys } from '../locals/constants'
 
 test('build in funcs list', () => {
   expect(builtInFuncKeys).toMatchInlineSnapshot(`
-    Array [
+    [
       "len",
       "count",
       "_count",

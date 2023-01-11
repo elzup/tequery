@@ -7,8 +7,8 @@ test('no trans', () => {
 
 test('non-head', () => {
   expect(preTrans('.hello')).toMatchInlineSnapshot(`
-    Object {
-      "comps": Object {
+    {
+      "comps": {
         "lineRun": false,
         "nonHead": true,
       },
@@ -19,8 +19,8 @@ test('non-head', () => {
 
 test('line-run', () => {
   expect(preTrans('$$.length')).toMatchInlineSnapshot(`
-    Object {
-      "comps": Object {
+    {
+      "comps": {
         "lineRun": true,
         "nonHead": false,
       },
