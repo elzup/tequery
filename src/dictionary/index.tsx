@@ -51,7 +51,7 @@ const funcs: Dict[] = [
     desc: `trim left column`,
     docCode: `shiftl(text: string, to = '\t', n = 1)`,
     goodInput: `a-b-c`,
-    suggestText: (_text, { cellLike }) => (cellLike ? 100 : -100),
+    suggestText: (_text, { cellLike = false }) => (cellLike ? 100 : -100),
   },
   {
     name: `shiftr`,
@@ -60,7 +60,7 @@ const funcs: Dict[] = [
     desc: `trim right column`,
     docCode: `shiftr(text: string, to = '\t', n = 1)`,
     goodInput: `a,b,c`,
-    suggestText: (_text, { cellLike }) => (cellLike ? 100 : -100),
+    suggestText: (_text, { cellLike = false }) => (cellLike ? 100 : -100),
   },
   {
     name: `json`,
@@ -85,7 +85,7 @@ const funcs: Dict[] = [
     bindCode: `_cq('><')($$)`,
     docCode: `cq($$, ',><<')`,
     goodInput: `del,ok,del,del`,
-    suggestText: (_text, { cellLike, multiline }) =>
+    suggestText: (_text, { cellLike = false, multiline = false }) =>
       (cellLike ? 50 : 0) + (multiline ? 50 : 0),
   },
 ]
