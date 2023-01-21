@@ -1,8 +1,9 @@
-export const vars = (text: string) => {
+export const vars = (text: string, lineNum?: number) => {
   const $sp = (v: string) => text.split(v)
   const $lines = $sp('\n')
   const $tsv = $sp('\t')
   const $csv = $sp(',')
+  const $i = lineNum
 
   return {
     $lines,
@@ -10,5 +11,6 @@ export const vars = (text: string) => {
     $tsv,
     $csv,
     $sp,
+    $i,
   }
 }

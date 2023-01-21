@@ -8,7 +8,9 @@ export function tequeryLines(
   comps: Complements,
   option: OptionV3
 ): Result {
-  const results = text.split('\n').map((line) => runEval(line, query, option))
+  const results = text
+    .split('\n')
+    .map((line, i) => runEval(line, query, option, i))
 
   /* istanbul ignore next */
   if (!results[0]) throw new Error('never reach') // always .split('\n').length > 0

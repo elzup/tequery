@@ -9,7 +9,8 @@ export const toReturnCode = (code: string) => `return ${code}`
 export const runEval = (
   embed: string,
   query: string,
-  option: OptionV3 = { glue: '\n' }
+  option: OptionV3 = { glue: '\n' },
+  lineNum: number | undefined = undefined
 ): RunInfo => {
   const resBase = {
     status: 'ok',
@@ -24,7 +25,7 @@ export const runEval = (
     const args = {
       $: embed,
       ...funcs,
-      ...vars(embed),
+      ...vars(embed, lineNum),
     }
     const resultRaw = funcEval(args, toReturnCode(query))
 

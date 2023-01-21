@@ -146,6 +146,8 @@ test('build in vars', () => {
   expect(tq('a\nb\nc', `$lines.join(':')`).result).toBe('a:b:c')
   expect(tq('a\nb\nc', `$ls.join(':')`).result).toBe('a:b:c')
   expect(tq('a+b+c', `$sp('+').join(':')`).result).toBe('a:b:c')
+  expect(tq('a\nb\nc', `($i + 1) + '.' + $$`).result).toBe('1.a\n2.b\n3.c')
+  expect(tq('a\nb\nc', `$$i`).result).toBe('0\n1\n2')
 })
 
 test('build in vars with line-run', () => {

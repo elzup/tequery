@@ -93,6 +93,7 @@ const funcs: Dict[] = [
 const vars: Dict[] = [
   { name: `$`, code: `$`, desc: `text`, goodInput: `hello` },
   { name: `$$`, code: `$$`, desc: `each lines`, goodInput: `a\nb` },
+  { name: '$i', code: '$i', desc: 'line index', goodInput: `a\nb` },
   { name: '$lines', code: '$lines', desc: 'split by line', goodInput: `a\nb` },
   { name: '$ls', code: '$ls', desc: 'alias of $lines', goodInput: `a\nb` },
   { name: '$tsv', code: '$tsv', desc: 'split by tab', goodInput: `a\tb` },
