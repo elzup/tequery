@@ -34,7 +34,7 @@ export const getAttrsStr = (text: unknown): Attrs => {
   if (typeof text !== 'string') return attrs
 
   const lines = text.split('\n')
-  const line1 = lines[0] || null
+  const line1 = lines[0] ?? null
 
   suggests.forEach((s) => {
     attrs[s.key] = s.check({ text, line1, lines })

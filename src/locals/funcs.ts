@@ -41,8 +41,8 @@ const OP_SHIFT = ['<', '>'] as const
 const OP_PICK = ['_', '.'] as const
 const OPS = [OP_SHIFT, OP_PICK].flat()
 
-type OpShift = typeof OP_SHIFT[number]
-type OpPick = typeof OP_PICK[number]
+type OpShift = (typeof OP_SHIFT)[number]
+type OpPick = (typeof OP_PICK)[number]
 // type Op = OpShift | OpPick
 // NOTE: | '=' | ':' | ',' | '|' | '&' | '!' | '+' | '*' | '/' | '%' | '^' | '~'
 
@@ -64,7 +64,7 @@ const defaultSpChars = ',st'
 
 const toCqOption = (option: CqOptionArg): CqOption => {
   return {
-    spChars: option.spChars || defaultSpChars,
+    spChars: option.spChars ?? defaultSpChars,
     opsShift:
       typeof option.opsShift === 'string'
         ? option.opsShift?.split('').filter(isOpShift)
@@ -75,13 +75,17 @@ const toCqOption = (option: CqOptionArg): CqOption => {
         : option.opsPick ?? [],
   }
 }
+
+const emptyOr = (v: null | string | undefined, defaultValue: string): string =>
+  Boolean(v) && typeof v === 'string' ? v : defaultValue
+
 const cqOptionParse = (option: string | CqOptionArg): CqOption => {
   if (typeof option !== 'string') return toCqOption(option)
 
   const m = option.match(new RegExp(`^(.*?)([${OPS.join('')}]*)$`))
-  const spChars = m?.[1] || defaultSpChars
-  const opsShift = (m?.[2] || '').split('').filter(isOpShift)
-  const opsPick = (m?.[2] || '').split('').filter(isOpPick)
+  const spChars = emptyOr(m?.[1], defaultSpChars)
+  const opsShift = emptyOr(m?.[2], '').split('').filter(isOpShift)
+  const opsPick = emptyOr(m?.[2], '').split('').filter(isOpPick)
 
   return { spChars, opsPick, opsShift }
 }
@@ -138,7 +142,7 @@ export const cq = (text: string, option: string | CqOptionArg): string => {
 
   // if (resCells.length === 0) return ''
 
-  const tail = resCells.pop() || ''
+  const tail = resCells.pop() ?? ''
 
   return resCells.map((v, i) => `${v}${resSps[i]}`).join('') + tail
 }

@@ -19,7 +19,7 @@ export function tequeryLines(
     status: results.some((r) => r.status === 'ok') ? 'ok' : 'ng',
     evalQuery: results[0].evalQuery,
     returnType: results[0].returnType,
-    errorText: results.find((r) => r.status === 'ng')?.errorText || '',
+    errorText: results.find((r) => r.status === 'ng')?.errorText ?? '',
     comps,
   }
 }
