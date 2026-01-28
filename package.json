@@ -27,8 +27,8 @@
   "dependencies": {},
   "devDependencies": {
     "@elzup/tsconfig": "1.1.0",
-    "@swc/core": "1.3.67",
-    "@swc/jest": "0.2.26",
+    "@swc/core": "1.15.11",
+    "@swc/jest": "0.2.39",
     "@types/jest": "29.5.14",
     "@types/react": "19.2.7",
     "eslint": "8.57.1",
