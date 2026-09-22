@@ -6,7 +6,7 @@
   "repository": "elzup/tequery",
   "license": "MIT",
   "engines": {
-    "node": ">=12"
+    "node": ">=22"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
